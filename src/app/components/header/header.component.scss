@@ -1,0 +1,44 @@
+ion-toolbar {
+    --background: var(--ion-color-header-bg);
+    padding: 0 1rem;
+  }
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 3rem;
+  }
+  
+  .logo {
+    height: 32px;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  
+  .nav-links a:hover {
+    text-decoration: underline;
+  }
+  
+.header-content,
+.nav-links a {
+    font-family: 'Hind Vadodara', sans-serif;
+}
+  
+.header-content,
+.nav-links a {
+    font-family: 'Hind Vadodara', sans-serif;
+    color: #89A6C0; 
+}
+
