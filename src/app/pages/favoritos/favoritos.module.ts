@@ -15,6 +15,6 @@ import { FavoritosPage } from './favoritos.page';
     IonicModule,
     FavoritosPageRoutingModule
   ],
-  //declarations: [FavoritosPage]
+  declarations: [FavoritosPage]
 })
 export class FavoritosPageModule {}

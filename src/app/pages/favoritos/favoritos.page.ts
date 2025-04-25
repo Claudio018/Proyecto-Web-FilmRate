@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-favoritos',
   templateUrl: './favoritos.page.html',
   styleUrls: ['./favoritos.page.scss'],
+  standalone: false
 })
 export class FavoritosPage implements OnInit {
 

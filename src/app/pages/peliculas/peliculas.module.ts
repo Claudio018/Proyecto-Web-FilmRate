@@ -15,6 +15,6 @@ import { PeliculasPage } from './peliculas.page';
     IonicModule,
     PeliculasPageRoutingModule
   ],
-  //declarations: [PeliculasPage]
+  declarations: [PeliculasPage]
 })
 export class PeliculasPageModule {}

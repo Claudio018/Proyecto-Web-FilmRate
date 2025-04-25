@@ -15,6 +15,6 @@ import { InicioSesionPage } from './inicio-sesion.page';
     IonicModule,
     InicioSesionPageRoutingModule
   ],
-  //declarations: [InicioSesionPage]
+  declarations: [InicioSesionPage]
 })
 export class InicioSesionPageModule {}
