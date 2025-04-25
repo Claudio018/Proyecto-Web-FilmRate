@@ -1,6 +1,7 @@
 ion-content {
     --background: #121920;
   }
+  
   .content-container {
     display: flex;
     flex-direction: row;
@@ -19,6 +20,18 @@ ion-content {
     grid-gap: 16px;
   }
   
+  .grid-form ion-item,
+  .submit-button,
+  .content-container ion-select,
+  .content-container ion-input {
+    border-radius: 8px;
+    --border-radius: 8px;
+  }
+  
+  ion-item {
+    overflow: hidden;
+  }
+  
   .terms-item {
     grid-column: 1 / -1;
     margin-top: 8px;
@@ -27,6 +40,7 @@ ion-content {
   .submit-button {
     margin-top: 24px;
     width: 200px;
+    border-radius: 8px;
   }
   
   .image-container {
@@ -52,3 +66,4 @@ ion-content {
     font-weight: bold;
     color: #333;
   }
+  
