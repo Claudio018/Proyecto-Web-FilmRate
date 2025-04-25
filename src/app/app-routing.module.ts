@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: '',
@@ -13,19 +13,19 @@ const routes: Routes = [
   },
   {
     path: 'inicio-sesion',
-    loadChildren: () => import('./inicio-sesion/inicio-sesion.module').then( m => m.InicioSesionPageModule)
+    loadChildren: () => import('./pages/inicio-sesion/inicio-sesion.module').then( m => m.InicioSesionPageModule)
   },
   {
     path: 'peliculas',
-    loadChildren: () => import('./peliculas/peliculas.module').then( m => m.PeliculasPageModule)
+    loadChildren: () => import('./pages/peliculas/peliculas.module').then( m => m.PeliculasPageModule)
   },
   {
     path: 'resenas',
-    loadChildren: () => import('./resenas/resenas.module').then( m => m.ResenasPageModule)
+    loadChildren: () => import('./pages/resenas/resenas.module').then( m => m.ResenasPageModule)
   },
   {
     path: 'favoritos',
-    loadChildren: () => import('./favoritos/favoritos.module').then( m => m.FavoritosPageModule)
+    loadChildren: () => import('./pages/favoritos/favoritos.module').then( m => m.FavoritosPageModule)
   },
 ];
 
