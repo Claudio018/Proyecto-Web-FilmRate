@@ -55,3 +55,24 @@ Nota: El figma cuenta con dos versiones en la sección 'Pages', con nombre de la
 La experiencia de usuario se enfoca en la simplicidad, íconos reconocibles (corazón, lupa) y formularios con campos bien espaciados. Cada acción relevante como agregar a favoritos o escribir una reseña, está accesible con pocos toques, y los elementos como calificaciones con estrellas o botones de reproducción de video aportan interactividad de manera rápida
 
 En la versión web, la navegación se organiza con un header fijo que permite moverse entre inicio, favoritos, perfil y acciones administrativas según el rol del usuario. Las vistas están claramente separadas: inicio de sesión, registro, visualización de películas, creación y lectura de reseñas, y favoritos
+
+# Instrucciones de instalación y ejecución
+1. Requisitos previos
+
+- Node.js
+- Ionic CLI
+- Git (para clonar el repositorio)
+
+2. Clonar el repositorio
+```
+git clone https://github.com/Claudio018/Proyecto-Web-FilmRate.git
+```
+cd Proyecto-Web-FilmRate
+
+3. Instalar dependencias
+```
+npm install
+
+4. Ejecutar la aplicación
+```
+ionic serve
