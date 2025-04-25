@@ -1,0 +1,28 @@
+<ion-content class="ion-padding login-page">
+    <div class="login-container">
+      <div class="logo-section">
+        <img src="assets/Logo.png" alt="Logo de Reseñas" class="logo" />
+        <h2>Los numero 1 en<br />Reseñas!</h2>
+      </div>
+  
+      <form (submit)="onLogin()">
+        <ion-item>
+          <ion-label position="floating">Nombre de usuario</ion-label>
+          <ion-input type="text" [(ngModel)]="username" name="username" required></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required></ion-input>
+          <ion-icon slot="end" name="eye" (click)="togglePasswordVisibility()"></ion-icon>
+        </ion-item>
+  
+        <ion-button expand="block" type="submit" class="login-button">Iniciar Sesión</ion-button>
+      </form>
+  
+      <p class="register-link">
+        ¿No tienes cuenta? <a routerLink="/register">Regístrate</a>
+      </p>
+    </div>
+  </ion-content>
+  

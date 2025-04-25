@@ -1,9 +1,56 @@
-.contenido-inicio-sesion {
+.login-page {
+  --background: #121920;
+
+  .login-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra horizontalmente */
-    justify-content: center; /* Centra verticalmente */
-    height: 100%; /* Ocupa todo el alto disponible */
-    padding-top: 60px; /* Espacio para evitar que quede pegado al header */
-    text-align: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    color: white;
   }
+
+  .logo-section {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .logo {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-weight: bold;
+      font-size: 22px;
+      color: white;
+    }
+  }
+
+  ion-item {
+    margin-bottom: 20px;
+    background: #1e2a34;
+    border-radius: 8px;
+    --highlight-color-focused: #fff;
+    --color: white;
+  }
+
+  ion-label {
+    color: white;
+  }
+
+  .login-button {
+    background-color: #121212;
+  }
+
+  .register-link {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+
+    a {
+      color: #38a1f3;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  }
+}

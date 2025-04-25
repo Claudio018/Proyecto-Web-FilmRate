@@ -8,7 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InicioSesionPage implements OnInit {
 
-  constructor() { }
+  username: string = '';
+  password: string = '';
+  showPassword: boolean = false;
+
+  constructor() {}
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  onLogin() {
+    // Lógica para iniciar sesión
+    console.log('Usuario:', this.username);
+    console.log('Contraseña:', this.password);
+  }
+
+
 
   ngOnInit() {
   }
