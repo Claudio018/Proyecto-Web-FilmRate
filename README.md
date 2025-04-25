@@ -67,16 +67,20 @@ En la versión web, la navegación se organiza con un header fijo que permite mo
 
 ```
 git clone https://github.com/Claudio018/Proyecto-Web-FilmRate.git
+```
 
 ```
 cd Proyecto-Web-FilmRate
+```
 
 3. Instalar dependencias
 
 ```
 npm install
+```
 
 4. Ejecutar la aplicación
 
 ```
 ionic serve
+```
