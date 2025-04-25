@@ -3,9 +3,13 @@ FilmRate es una plataforma web donde los usuarios pueden descubrir, reseñar y c
 
 
 # Roles del Sistema
+
 El sistema cuenta con los siguientes roles:
-    1. Usuario: Aquel que navega por la aplicación e interactúa con las películas
-    2. Moderador: Posee la facultad de borrar cuentas y cambiar contraseña de las cuentas
+
+1. **Usuario**: Aquel que navega por la aplicación e interactúa con las películas.
+
+2. **Moderador**: Posee la facultad de borrar cuentas y cambiar contraseña de las cuentas.
+  
 
 
 # RF (Requerimientos Funcionales)
