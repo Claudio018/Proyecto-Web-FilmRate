@@ -1,5 +1,16 @@
-<ion-content [style.backgroundColor]="'var(--ion-color-background)'">
-    <div class="contenido-home">
-        <h1>Página principal</h1>
-      </div>
+<ion-content [fullscreen]="true">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col 
+        size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2"
+        *ngFor="let movie of movies">
+        <ion-card class="movie-card">
+          <img [src]="movie.image" alt="{{movie.title}}" />
+          <ion-card-content>
+            <p class="movie-title">{{ movie.title }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

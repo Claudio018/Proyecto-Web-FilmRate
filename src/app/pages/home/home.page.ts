@@ -8,7 +8,8 @@ import { Component } from '@angular/core';
 })
 
 export class HomePage {
-
-  constructor() {}
-
+  movies = Array(18).fill({
+    title: 'Marvel Avengers',
+    image: 'https://via.placeholder.com/200x300.png?text=Poster' 
+  });
 }
