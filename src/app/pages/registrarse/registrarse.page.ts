@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RegistrarService } from 'src/app/services/registrar.service';
+import { Registrar } from 'src/app/models/registrar';
 
 @Component({
   selector: 'app-registrarse',
@@ -9,15 +11,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegistrarsePage implements OnInit {
   registrarseForm!: FormGroup;
+
   comunasPorRegion: { [key: string]: string[] } = {
-    'Región 1': ['Comuna A', 'Comuna B'],
-    'Región 2': ['Comuna C', 'Comuna D'],
-    'Región 3': ['Comuna E', 'Comuna F']
+    'Región Metropolitana': ['Santiago', 'Puente Alto', 'Maipú'],
+    'Valparaíso': ['Valparaíso', 'Viña del Mar', 'Quilpué'],
+    'Biobío': ['Concepción', 'Talcahuano', 'Los Ángeles']
   };
+
   regions: string[] = [];
   filteredComunas: string[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private registrarService: RegistrarService
+  ) {}
 
   ngOnInit() {
     this.registrarseForm = this.fb.group({
@@ -29,7 +36,7 @@ export class RegistrarsePage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       terms: [false, Validators.requiredTrue]
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
 
     this.regions = Object.keys(this.comunasPorRegion);
   }
@@ -47,7 +54,27 @@ export class RegistrarsePage implements OnInit {
 
   onSubmit() {
     if (this.registrarseForm.valid) {
-      console.log(this.registrarseForm.value);
+      const datos: Registrar = {
+        nombre: this.registrarseForm.value.nombre,
+        rut: this.registrarseForm.value.rut,
+        correo: this.registrarseForm.value.correo,
+        region: this.registrarseForm.value.region,
+        comuna: this.registrarseForm.value.comuna,
+        password: this.registrarseForm.value.password,
+        confirmPassword: this.registrarseForm.value.confirmPassword,
+        terms: this.registrarseForm.value.terms
+      };
+
+      this.registrarService.register(datos).subscribe({
+        next: (res) => {
+          console.log('Registro exitoso:', res);
+          // Aquí puedes redirigir, mostrar un mensaje o limpiar el formulario
+        },
+        error: (err) => {
+          console.error('Error en registro:', err.error?.message || err.message);
+        }
+      });
+
     } else {
       this.registrarseForm.markAllAsTouched();
     }

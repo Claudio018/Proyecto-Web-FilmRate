@@ -66,4 +66,21 @@ ion-content {
     font-weight: bold;
     color: #333;
   }
+ion-item {
+  position: relative;
+
+  ion-note[slot="helper"] {
+    display: block;
+    min-height: 1.2em; // reserva el espacio para no mover nada
+    font-size: 0.8em;
+    line-height: 1.2em;
+    margin-top: 4px;
+  }
+}
+
+.form-container {
+  ion-item {
+    margin-bottom: 12px;
+  }
+}
   
