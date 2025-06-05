@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuario');
+const { UniqueConstraintError } = require('sequelize');
 
 const router = express.Router();
 
@@ -15,6 +16,11 @@ router.post('/register', async (req, res) => {
   }
 
   try {
+    //verificacion si ya existe el usuario
+    const usuarioExistente = await Usuario.findOne({ where: { nombre } });
+    if (usuarioExistente) {
+        return res.status(400).json({ error: 'El nombre de usuario ya está en uso.' });
+    }
     const hashedPassword = await bcrypt.hash(contrasena, 10);
     console.log('Password hasheada:', hashedPassword);
 
@@ -29,9 +35,21 @@ router.post('/register', async (req, res) => {
 
     console.log('Usuario creado:', nuevoUsuario);
 
-    res.status(201).json({ mensaje: 'Usuario registrado', usuario: nuevoUsuario });
+    res.status(201).json({ mensaje: `Usuario ${nuevoUsuario.nombre} registrado correctamente` });
   } catch (error) {
     console.error('Error en register:', error);
+
+    if (error instanceof UniqueConstraintError) {
+        const campoDuplicado = error.errors[0].path;
+
+        let mensaje = 'Ya existe un registro con esos datos.';
+        if (campoDuplicado === 'correo') mensaje = 'El correo ya está registrado.';
+        else if (campoDuplicado === 'rut') mensaje = 'El RUT ya está registrado.';
+        else if (campoDuplicado === 'nombre') mensaje = 'El nombre de usuario ya está en uso.';
+
+        return res.status(400).json({ error: mensaje });
+    }
+
     res.status(500).json({ error: 'Error al registrar usuario', detalle: error.message });
   }
 });

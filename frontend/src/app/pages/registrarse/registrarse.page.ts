@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 })
 export class RegistrarsePage implements OnInit {
   registrarseForm!: FormGroup;
+
+  displayedErrorMessage: string = '';
+  successMessage: string = '';
+
   comunasPorRegion: { [key: string]: string[] } = {
     'Región 1': ['Comuna A', 'Comuna B'],
     'Región 2': ['Comuna C', 'Comuna D'],
@@ -31,7 +35,7 @@ export class RegistrarsePage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       terms: [false, Validators.requiredTrue]
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
 
     this.regions = Object.keys(this.comunasPorRegion);
   }
@@ -48,30 +52,59 @@ export class RegistrarsePage implements OnInit {
   }
 
   onSubmit() {
-    if (this.registrarseForm.valid) {
-      console.log(this.registrarseForm.value);
-      const formData = this.registrarseForm.value;
+    this.displayedErrorMessage = '';
+    this.successMessage = '';
 
-      const userPayload = {
-        nombre: formData.nombre,
-        rut: formData.rut,
-        correo: formData.correo,
-        region: formData.region,
-        comuna: formData.comuna,
-        contrasena: formData.password,
-      };
+    if (this.registrarseForm.invalid) {
+      const controls = this.registrarseForm.controls;
 
-      this.authService.register(userPayload).subscribe({
-      next: (res) => {
-        alert('Registro exitoso');
-        this.router.navigate(['/login']);  // redirigir al login tras registrarse
+      if (controls['nombre'].invalid) {
+        this.displayedErrorMessage = 'El nombre es obligatorio.';
+      } else if (controls['rut'].invalid) {
+        this.displayedErrorMessage = 'El RUT es obligatorio.';
+      } else if (controls['correo'].invalid) {
+        if (controls['correo'].errors?.['required']) {
+          this.displayedErrorMessage = 'El correo es obligatorio.';
+        } else if (controls['correo'].errors?.['email']) {
+          this.displayedErrorMessage = 'El correo no es válido.';
+        }
+      } else if (controls['region'].invalid) {
+        this.displayedErrorMessage = 'Debes seleccionar una región.';
+      } else if (controls['comuna'].invalid) {
+        this.displayedErrorMessage = 'Debes seleccionar una comuna.';
+      } else if (controls['password'].invalid) {
+        this.displayedErrorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+      } else if (controls['confirmPassword'].invalid || this.registrarseForm.hasError('mismatch')) {
+        this.displayedErrorMessage = 'Las contraseñas no coinciden.';
+      } else if (controls['terms'].invalid) {
+        this.displayedErrorMessage = 'Debes aceptar los términos y condiciones.';
+      }
+
+      this.registrarseForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = this.registrarseForm.value;
+
+    const userPayload = {
+      nombre: formData.nombre,
+      rut: formData.rut,
+      correo: formData.correo,
+      region: formData.region,
+      comuna: formData.comuna,
+      contrasena: formData.password,
+    };
+
+    this.authService.register(userPayload).subscribe({
+      next: () => {
+        this.successMessage = `Usuario registrado: ${formData.nombre}`;
+        this.displayedErrorMessage = '';
+        setTimeout(() => {this.router.navigate(['../inicio-sesion']);}, 5000);
       },
       error: (err) => {
-        alert('Error en registro: ' + err.error.error || 'Intenta nuevamente');
+        this.displayedErrorMessage = err.error?.error || 'Error en el registro, intenta nuevamente.';
+        this.successMessage = '';
       }
     });
-    } else {
-      this.registrarseForm.markAllAsTouched();
-    }
   }
 }

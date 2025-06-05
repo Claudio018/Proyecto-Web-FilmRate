@@ -38,11 +38,36 @@ ion-content {
   }
   
   .submit-button {
+    display: flex;
+    align-items: center;
     margin-top: 24px;
+    gap: 12px;
+  }
+
+  .button-row {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+
+  .submit-button {
     width: 200px;
     border-radius: 8px;
   }
-  
+
+  .error-message {
+    color: red;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .success-message {
+    color: green;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
   .image-container {
     flex: 1;
     background: #f6d596;

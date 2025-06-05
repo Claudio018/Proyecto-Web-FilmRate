@@ -48,8 +48,26 @@
           <ion-label>Acepto los términos y condiciones</ion-label>
         </ion-item>
       </div>
-      <ion-button expand="block" type="submit" [disabled]="registrarseForm.invalid" class="submit-button">Registrarse</ion-button>
+
+      <!-- Botón y mensajes alineados -->
+      <div class="button-row">
+        <ion-button expand="block" type="submit" [disabled]="registrarseForm.invalid" class="submit-button">
+          Registrarse
+        </ion-button>
+
+        <!-- Mensaje de éxito en verde -->
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+
+        <!-- Mensaje de error en rojo -->
+        <div *ngIf="displayedErrorMessage" class="error-message">
+          {{ displayedErrorMessage }}
+        </div>
+      </div>
+
     </form>
+
     <div class="image-container">
       <img src="assets/Logo.png" alt="Popcorn" />
       <p>No olvides seguirnos en nuestra página!</p>
