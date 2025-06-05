@@ -14,6 +14,9 @@ export class InicioSesionPage implements OnInit {
   password: string = '';
   showPassword: boolean = false;
 
+  mensaje: string = ''; 
+  mensajeColor: 'success' | 'danger' = 'danger'; 
+
   constructor(private authService: AuthService, private router: Router) {}
 
   togglePasswordVisibility() {
@@ -21,24 +24,25 @@ export class InicioSesionPage implements OnInit {
   }
 
   onLogin() {
-    console.log('Usuario:', this.username);
-    console.log('Contraseña:', this.password);
+    this.mensaje = ''; // Limpiar mensaje 
 
     if (!this.username || !this.password) {
-      alert('Por favor ingresa usuario y contraseña');
+      this.mensajeColor = 'danger';
+      this.mensaje = 'Por favor ingresa usuario y contraseña';
       return;
     }
 
     this.authService.login({ nombre: this.username, contrasena: this.password }).subscribe({
       next: (res) => {
-        alert('Login exitoso');
-        //this.router.navigate(['/home']);  //redirigir a ventana
+        this.mensajeColor = 'success';
+        this.mensaje = 'Inicio sesion exitoso';
+        setTimeout(() => {this.router.navigate(['/home']);}, 5000);
       },
       error: (err) => {
-        alert('Error de login: ' + (err.error.error || 'Credenciales incorrectas'));
+        this.mensajeColor = 'danger';
+        this.mensaje = (err.error.error);
       }
     });
-
   }
 
   ngOnInit() {}

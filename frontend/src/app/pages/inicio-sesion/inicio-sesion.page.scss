@@ -53,4 +53,19 @@
       font-weight: bold;
     }
   }
+
+  .mensaje {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  .success {
+    color: #4caf50;  
+  }
+
+  .danger {
+    color: #f44336;  
+  }
 }
