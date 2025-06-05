@@ -21,21 +21,18 @@ export class InicioSesionPage implements OnInit {
   }
 
   onLogin() {
-    // Lógica para iniciar sesión
     console.log('Usuario:', this.username);
     console.log('Contraseña:', this.password);
 
-    //bd y validacion
     if (!this.username || !this.password) {
       alert('Por favor ingresa usuario y contraseña');
       return;
     }
 
-    this.authService.login({ correo: this.username, contraseña: this.password }).subscribe({
+    this.authService.login({ nombre: this.username, contrasena: this.password }).subscribe({
       next: (res) => {
         alert('Login exitoso');
-        // Aquí puedes guardar el token o info que recibas
-        this.router.navigate(['/home']);  // o la ruta principal que tengas
+        //this.router.navigate(['/home']);  //redirigir a ventana
       },
       error: (err) => {
         alert('Error de login: ' + (err.error.error || 'Credenciales incorrectas'));
@@ -44,9 +41,5 @@ export class InicioSesionPage implements OnInit {
 
   }
 
-
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
     //verificacion si ya existe el usuario
     const usuarioExistente = await Usuario.findOne({ where: { nombre } });
     if (usuarioExistente) {
-        return res.status(400).json({ error: 'El nombre de usuario ya está en uso.' });
+      return res.status(400).json({ error: 'El nombre de usuario ya está en uso.' });
     }
     const hashedPassword = await bcrypt.hash(contrasena, 10);
     console.log('Password hasheada:', hashedPassword);
@@ -40,53 +40,53 @@ router.post('/register', async (req, res) => {
     console.error('Error en register:', error);
 
     if (error instanceof UniqueConstraintError) {
-        const campoDuplicado = error.errors[0].path;
+      const campoDuplicado = error.errors[0].path;
 
-        let mensaje = 'Ya existe un registro con esos datos.';
-        if (campoDuplicado === 'correo') mensaje = 'El correo ya está registrado.';
-        else if (campoDuplicado === 'rut') mensaje = 'El RUT ya está registrado.';
-        else if (campoDuplicado === 'nombre') mensaje = 'El nombre de usuario ya está en uso.';
+      let mensaje = 'Ya existe un registro con esos datos.';
+      if (campoDuplicado === 'correo') mensaje = 'El correo ya está registrado.';
+      else if (campoDuplicado === 'rut') mensaje = 'El RUT ya está registrado.';
+      else if (campoDuplicado === 'nombre') mensaje = 'El nombre de usuario ya está en uso.';
 
-        return res.status(400).json({ error: mensaje });
+      return res.status(400).json({ error: mensaje });
     }
 
     res.status(500).json({ error: 'Error al registrar usuario', detalle: error.message });
   }
 });
 
-
 router.post('/login', async (req, res) => {
-  const { correo, contrasena } = req.body;
+  const { nombre, contrasena } = req.body;
 
   console.log('Datos recibidos para login:', req.body);
 
-  if (!correo || !contrasena) {
-    return res.status(400).json({ error: 'Correo y contraseña son requeridos para login' });
+  if (!nombre || !contrasena) {
+    return res.status(400).json({ error: 'Nombre y contraseña son requeridos para login' });
   }
 
   try {
-    const usuario = await Usuario.findOne({ where: { correo } });
+    // Buscar usuario por nombre 
+    const usuario = await Usuario.findOne({ where: { nombre } });
 
     if (!usuario) {
-      console.log('Usuario no encontrado con correo:', correo);
+      console.log('Usuario no encontrado con nombre:', nombre);
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
     const validPassword = await bcrypt.compare(contrasena, usuario.contrasena);
 
     if (!validPassword) {
-      console.log('Contraseña incorrecta para usuario:', correo);
+      console.log('Contraseña incorrecta para usuario:', nombre);
       return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
 
-    // Generar token
+    // Generar token con id y nombre
     const token = jwt.sign(
-      { id: usuario.id, correo: usuario.correo },
+      { id: usuario.id, nombre: usuario.nombre },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    console.log('Login exitoso para usuario:', correo);
+    console.log('Login exitoso para usuario:', nombre);
 
     res.json({ mensaje: 'Inicio de sesión exitoso', token });
   } catch (error) {
