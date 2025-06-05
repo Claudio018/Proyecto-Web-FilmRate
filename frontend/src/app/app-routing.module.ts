@@ -30,21 +30,14 @@ const routes: Routes = [
   {
     path: 'registrarse',
     loadChildren: () => import('./pages/registrarse/registrarse.module').then( m => m.RegistrarsePageModule)
-  },  {
+  },
+  {
     path: 'pelicula',
     loadChildren: () => import('./pages/pelicula/pelicula.module').then( m => m.PeliculaPageModule)
   },
   {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
-  },
-  {
-    path: 'leer-resena',
-    loadChildren: () => import('./leer-resena/leer-resena.module').then( m => m.LeerResenaPageModule)
-  },
-  {
-    path: 'crear-resena',
-    loadChildren: () => import('./crear-resena/crear-resena.module').then( m => m.CrearResenaPageModule)
   },
   {
     path: 'leer-resena',

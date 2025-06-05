@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-crear-resena',
   templateUrl: './crear-resena.page.html',
   styleUrls: ['./crear-resena.page.scss'],
+  standalone: false
 })
 export class CrearResenaPage implements OnInit {
 
