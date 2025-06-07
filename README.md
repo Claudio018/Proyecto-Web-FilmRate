@@ -61,30 +61,98 @@ La experiencia de usuario se enfoca en la simplicidad, íconos reconocibles (cor
 En la versión web, la navegación se organiza con un header fijo que permite moverse entre inicio, favoritos, perfil y acciones administrativas según el rol del usuario. Las vistas están claramente separadas: inicio de sesión, registro, visualización de películas, creación y lectura de reseñas, y favoritos
 
 # Instrucciones de instalación y ejecución
-1. Requisitos previos
 
-- Node.js
-- Ionic CLI
-- Git (para clonar el repositorio)
+---
 
-2. Clonar el repositorio
+## 1. Requisitos previos
 
-```
+Antes de comenzar, asegúrarse de contar con las siguientes herramientas instaladas y configuradas:
+
+* **Node.js** (recomendado v14 o superior)
+* **Ionic CLI**
+* **Git** (para clonar el repositorio)
+* **XAMPP** (con Apache y MySQL)
+
+* Iniciar Apache y MySQL desde el panel de control de XAMPP.
+* Verifica que MySQL esté escuchando en el puerto `3306`.
+
+---
+
+## 2. Clonar el repositorio
+
+Abrir una terminal y ejecutar los siguientes comandos para clonar el repositorio y posicionarse en la carpeta del proyecto:
+
+```bash
 git clone https://github.com/Claudio018/Proyecto-Web-FilmRate.git
-```
-
-```
 cd Proyecto-Web-FilmRate
 ```
 
-3. Instalar dependencias
+---
 
-```
+## 3. Configuración de la base de datos
+
+1. En XAMPP, asegúrarse de que **Apache** y **MySQL** estén activos.
+2. Abrir **phpMyAdmin** (por defecto en `http://localhost/phpmyadmin`).
+3. Crea una nueva base de datos llamada:
+
+   ```
+   filmrate_db
+   ```
+
+---
+
+## 4. Instalación de dependencias
+
+Se recomienda abrir dos terminales en paralelo para gestionar el backend y el frontend por separado.
+
+### Terminal 1: Backend
+
+```bash
+cd Proyecto-Web-FilmRate/backend
 npm install
 ```
 
-4. Ejecutar la aplicación
+### Terminal 2: Frontend
 
+```bash
+cd Proyecto-Web-FilmRate/frontend
+npm install
 ```
+
+---
+
+## 5. Ejecución del proyecto
+
+A continuación, se detallan los pasos para poner en marcha tanto el backend como el frontend.
+
+### 5.1. Iniciar el backend
+
+En la **Terminal 1** (dentro de `backend`), ejecutar:
+
+```bash
+node index.js
+```
+
+Este comando levantará el servidor backend en el puerto configurado (por defecto, `http://localhost:3000`).
+
+### 5.2. Iniciar el frontend
+
+En la **Terminal 2** (dentro de `frontend`), ejecutar:
+
+```bash
 ionic serve
 ```
+
+Al finalizar la compilación, Ionic abrirá automáticamente una ventana del navegador en:
+
+```
+http://localhost:8100/
+```
+
+---
+
+## 6. Notas finales
+
+* Si desea detener cualquiera de los servidores, presionar `Ctrl + C` en la terminal correspondiente.
+* Asegúrarse de que no haya otro servicio ocupando los puertos `3000` (backend) y `8100` (frontend).
+
