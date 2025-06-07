@@ -1,3 +1,5 @@
+// src/app/pages/crear-resena/crear-resena.page.ts
+
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,16 +22,13 @@ export class CrearResenaPage implements OnInit {
   isLoggedIn = false;
   peliculaIdSeleccionada: number | null = null;
 
-  // Formulario reactivo
   resenaForm!: FormGroup;
   submitting = false;
 
-  // Búsqueda de películas
-  busqueda: string = '';
+  busqueda = '';
   peliculasResult: PeliculaSimple[] = [];
-  tituloSeleccionado: string = '';
+  tituloSeleccionado = '';
 
-  // Valoración por estrellas
   valoracionSeleccionada = 0;
 
   constructor(
@@ -42,117 +41,115 @@ export class CrearResenaPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Estado de autenticación
+
     this.isLoggedIn = this.authService.isLoggedIn();
 
-    // Leer parámetro de película (si viene por queryParams)
-    this.route.queryParams.subscribe(params => {
-      const id = params['peliculaId'];
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
       if (id) {
         this.peliculaIdSeleccionada = +id;
-        // Cargar título desde TMDb
+        // cargar detalle de la película
         this.tmbdService.getMovieDetail(this.peliculaIdSeleccionada)
-          .subscribe(detail => {
-            this.tituloSeleccionado = detail.title;
+          .subscribe({
+            next: detail => this.tituloSeleccionado = detail.title,
+            error: () => {
+              console.error('Error al cargar detalle de película');
+              alert('No se pudo cargar la información.');
+            }
           });
       }
     });
 
-    // Inicializar el formulario
     this.resenaForm = this.fb.group({
       texto: ['', [Validators.required, Validators.minLength(10)]],
       valoracion: [null, [Validators.required, Validators.min(1), Validators.max(5)]]
     });
   }
 
-  /** Navegar al login */
   irALogin() {
     this.router.navigate(['/inicio-sesion']);
   }
 
-  /** Enviar reseña al backend */
   enviarResena() {
-    if (!this.isLoggedIn) {
-      this.irALogin();
-      return;
-    }
-    if (!this.peliculaIdSeleccionada) {
-      alert('No se ha seleccionado una película.');
-      return;
-    }
-    if (this.resenaForm.invalid) {
-      this.resenaForm.markAllAsTouched();
-      return;
-    }
-
-    this.submitting = true;
-    const nuevaResena = {
-      texto: this.resenaForm.value.texto,
-      valoracion: this.resenaForm.value.valoracion,
-      usuarioRut: this.authService.getUsuarioRut()
-    };
-
-    this.resenaService
-      .crearResena(this.peliculaIdSeleccionada, nuevaResena)
-      .subscribe({
-        next: () => {
-          alert('Reseña creada exitosamente');
-          this.resenaForm.reset();
-          this.valoracionSeleccionada = 0;
-          this.submitting = false;
-          this.router.navigate(['/detalle-pelicula'], {
-            queryParams: { peliculaId: this.peliculaIdSeleccionada }
-          });
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Error al crear la reseña');
-          this.submitting = false;
-        }
-      });
+  if (!this.isLoggedIn) {
+    this.irALogin();
+    return;
+  }
+  if (!this.peliculaIdSeleccionada) {
+    alert('No se ha seleccionado una película.');
+    return;
+  }
+  if (this.resenaForm.invalid) {
+    this.resenaForm.markAllAsTouched();
+    return;
   }
 
-  /** Manejar input del searchbar */
+  this.submitting = true;
+  const nuevaResena = {
+    texto: this.resenaForm.value.texto,
+    valoracion: this.resenaForm.value.valoracion,
+    usuarioRut: this.authService.getUsuarioRut(),
+    titulo: this.tituloSeleccionado // ✅ Agregado aquí
+  };
+
+  this.resenaService.crearResena(this.peliculaIdSeleccionada, nuevaResena)
+    .subscribe({
+      next: () => {
+        alert('Reseña creada exitosamente');
+        this.resenaForm.reset();
+        this.valoracionSeleccionada = 0;
+        this.submitting = false;
+        this.router.navigate(['/pelicula', this.peliculaIdSeleccionada]);
+      },
+      error: err => {
+        this.submitting = false;
+        console.error('Error al crear reseña:', err);
+        if (err.status === 404) {
+          alert('No se encontró la película (404).');
+        } else if (err.status === 500) {
+          alert('Error interno del servidor (500). Intenta más tarde.');
+        } else {
+          alert('Error desconocido al crear la reseña.');
+        }
+      }
+    });
+}
+
+
   onSearchPeliculas(ev: any) {
     const texto = ev.target.value?.trim();
-    if (texto && texto.length >= 2) {
-      this.tmbdService.searchMovies(texto)
-        .subscribe(res => {
-          this.peliculasResult = (res.results || []).map((m: any) => ({
-            id: m.id,
-            titulo: m.title
-          }));
-        });
+    if (texto.length >= 2) {
+      this.tmbdService.searchMovies(texto).subscribe({
+        next: res => this.peliculasResult = (res.results || []).map((m: any) => ({
+          id: m.id, titulo: m.title
+        })),
+        error: err => console.error('Error al buscar películas:', err)
+      });
     } else {
       this.peliculasResult = [];
     }
   }
 
-  /** Ejecutar búsqueda (botón) */
   onBuscar() {
     if (this.peliculasResult.length === 1) {
       this.seleccionarPelicula(this.peliculasResult[0]);
     } else {
-      // Aquí podrías abrir un modal o dropdown para elegir entre varios resultados
-      console.log('Mostrar lista de opciones:', this.peliculasResult);
+      console.log('Selecciona una película de la lista:', this.peliculasResult);
     }
   }
 
-  /** Limpiar searchbar */
   onClearSearch() {
     this.busqueda = '';
     this.peliculasResult = [];
   }
 
-  /** Seleccionar película de la lista */
   seleccionarPelicula(p: PeliculaSimple) {
     this.peliculaIdSeleccionada = p.id;
     this.tituloSeleccionado = p.titulo;
   }
 
-  /** Ajustar rating por estrellas */
   setValoracion(star: number) {
     this.valoracionSeleccionada = star;
-    this.resenaForm.get('valoracion')?.setValue(star);
+    this.resenaForm.get('valoracion')!.setValue(star);
   }
 }

@@ -19,13 +19,18 @@ sequelize.authenticate()
 // Modelos
 const Usuario = require('./usuario')(sequelize);
 const Resena = require('./resena')(sequelize);
+const Pelicula = require('./pelicula')(sequelize);
 
 // Relaciones
-Resena.belongsTo(Usuario, { foreignKey: 'usuarioRut' });
 Usuario.hasMany(Resena, { foreignKey: 'usuarioRut' });
+Resena.belongsTo(Usuario, { foreignKey: 'usuarioRut' });
+
+Pelicula.hasMany(Resena, { foreignKey: 'peliculaId' });
+Resena.belongsTo(Pelicula, { foreignKey: 'peliculaId' });
 
 module.exports = {
   sequelize,
   Usuario,
-  Resena
+  Resena,
+  Pelicula
 };

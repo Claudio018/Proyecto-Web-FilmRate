@@ -50,7 +50,7 @@
 
     <div class="resenas" *ngIf="resenas.length > 0; else noResenas">
       <div *ngFor="let r of resenas" class="resena">
-        <p><strong>{{ r.usuario }}</strong></p>
+        <p>Usuario <strong>{{ r.usuario }}</strong></p>
         <p>{{ r.texto }}</p>
       </div>
     </div>

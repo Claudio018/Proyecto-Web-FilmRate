@@ -64,6 +64,6 @@ export class PeliculaPage implements OnInit {
   }
 
   irCrearResena() {
-    this.router.navigate(['../crear-resena', this.peliculaId]);
+    this.router.navigate(['/crear-resena', this.peliculaId]);
   }
 }

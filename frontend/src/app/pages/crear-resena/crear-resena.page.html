@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Crear Reseña</ion-title>
+    <ion-title>Crear Reseña para {{ tituloSeleccionado }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -45,12 +45,12 @@
             </ion-item>
 
             <!-- Lista de resultados -->
-            <ion-list *ngIf="peliculasResult.length > 0">
-              <ion-item
-                *ngFor="let p of peliculasResult"
-                button
-                (click)="seleccionarPelicula(p)">
-                {{ p.titulo }}
+            <ion-list *ngIf="peliculasResult.length > 0" class="lista-peliculas">
+              <ion-item 
+                *ngFor="let peli of peliculasResult" 
+                button 
+                (click)="seleccionarPelicula(peli)">
+                {{ peli.titulo }}
               </ion-item>
             </ion-list>
 
