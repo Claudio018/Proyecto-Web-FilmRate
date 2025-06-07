@@ -1,13 +1,52 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>pelicula</ion-title>
+    <ion-title>Película: {{ pelicula?.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">pelicula</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content *ngIf="pelicula">
+  <div class="container">
+    <div 
+      class="banner" 
+      [style.background-image]="'url(https://image.tmdb.org/t/p/w780' + pelicula.backdrop_path + ')'"
+    ></div>
+
+    <div class="info">
+      <img [src]="'https://image.tmdb.org/t/p/w185' + pelicula.poster_path" class="poster" />
+      <div>
+        <h1>{{ pelicula.title }}</h1>
+        <p>{{ pelicula.overview }}</p>
+        <p><strong>Rating:</strong> {{ pelicula.vote_average }}</p>
+      </div>
+    </div>
+
+    <h2>Trailer</h2>
+
+    <ng-container *ngIf="trailerUrl; else noTrailer">
+      <ion-card>
+        <div class="video-container">
+          <iframe
+            [src]="trailerUrl | safe"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </ion-card>
+    </ng-container>
+
+    <ng-template #noTrailer>
+      <p>No hay tráiler disponible para esta película.</p>
+    </ng-template>
+
+
+    <h2>Reseñas</h2>
+    <div class="resenas" *ngIf="resenas.length > 0; else noResenas">
+      <div *ngFor="let r of resenas" class="resena">
+        <p><strong>{{ r.usuario }}</strong></p>
+        <p>{{ r.texto }}</p>
+      </div>
+    </div>
+    <ng-template #noResenas>
+      <p>No hay reseñas disponibles.</p>
+    </ng-template>
+  </div>
 </ion-content>

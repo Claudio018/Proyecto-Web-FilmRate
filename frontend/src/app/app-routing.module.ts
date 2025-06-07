@@ -36,6 +36,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pelicula/pelicula.module').then( m => m.PeliculaPageModule)
   },
   {
+    path: 'pelicula/:id',
+    loadChildren: () => import('./pages/pelicula/pelicula.module').then(m => m.PeliculaPageModule)
+  },
+  {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },

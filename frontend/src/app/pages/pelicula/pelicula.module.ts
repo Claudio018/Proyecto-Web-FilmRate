@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SafePipe } from '../../pipes/safe.pipe';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,7 +14,8 @@ import { PeliculaPage } from './pelicula.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    PeliculaPageRoutingModule
+    PeliculaPageRoutingModule,
+    SafePipe
   ],
   declarations: [PeliculaPage]
 })

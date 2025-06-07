@@ -11,8 +11,21 @@ const sequelize = new Sequelize(
   }
 );
 
+// Conexión
 sequelize.authenticate()
-  .then(() => console.log('se conecto la bd'))
-  .catch(err => console.error('no se conecto a bd', err));
+  .then(() => console.log('Se conectó a la BD'))
+  .catch(err => console.error('No se conectó a BD', err));
 
-module.exports = sequelize;
+// Modelos
+const Usuario = require('./usuario')(sequelize);
+const Resena = require('./resena')(sequelize);
+
+// Relaciones
+Resena.belongsTo(Usuario, { foreignKey: 'usuarioRut' });
+Usuario.hasMany(Resena, { foreignKey: 'usuarioRut' });
+
+module.exports = {
+  sequelize,
+  Usuario,
+  Resena
+};
