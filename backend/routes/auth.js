@@ -6,6 +6,7 @@ const { UniqueConstraintError } = require('sequelize');
 
 const router = express.Router();
 
+//post para registrarse
 router.post('/register', async (req, res) => {
   const { nombre, rut, correo, region, comuna, contrasena } = req.body;
 
@@ -54,6 +55,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
+//post para login
 router.post('/login', async (req, res) => {
   const { nombre, contrasena } = req.body;
 

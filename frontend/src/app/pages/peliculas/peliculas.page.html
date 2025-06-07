@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Peliculas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="search-bar">
+  <input [(ngModel)]="searchQuery"
+         (keyup.enter)="search()"
+         (input)="search()"
+         placeholder="Buscar una película" />
+  <button (click)="search()">
+    <img src="assets/icon/search.png" alt="Buscar" />
+  </button>
+</div>
+
+  <div class="grid">
+    <div class="card" *ngFor="let pelicula of peliculas">
+      <img [src]="'https://image.tmdb.org/t/p/w300' + pelicula.poster_path" alt="{{pelicula.title}}">
+      <div class="title">{{ pelicula.title }}</div>
+    </div>
+  </div>
+</ion-content>

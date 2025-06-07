@@ -32,7 +32,7 @@ const Usuario = sequelize.define('Usuario', {
   }
 }, {
   tableName: 'Usuarios',
-  timestamps: false,  // evita createdAt y updatedAt
+  timestamps: false,
 });
 
 module.exports = Usuario;
