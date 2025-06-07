@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { TmbdService } from '../../services/tmbd.service';
 import { ResenaService } from '../../services/resena.service';
 import { Router } from '@angular/router';
+import { ViewWillEnter } from '@ionic/angular';
+
 
 
 @Component({
@@ -12,6 +14,13 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class PeliculaPage implements OnInit {
+
+  ionViewWillEnter() {
+    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
+      this.resenas = data;
+    });
+  }
+
   peliculaId!: number;
   pelicula: any = null;
   trailerUrl: string | null = null;

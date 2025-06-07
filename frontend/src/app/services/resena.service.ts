@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,16 @@ export class ResenaService {
   constructor(private http: HttpClient) {}
 
   getResenasByPelicula(id: number) {
-    return this.http.get<any[]>(`${this.apiUrl}/${id}/resenas`);
+    const token = localStorage.getItem('token');
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+
+    return this.http.get<any[]>(`${this.apiUrl}/${id}/resenas`, { headers });
   }
 
   crearResena(peliculaId: number, resenaData: any) {
-    return this.http.post(`${this.apiUrl}/${peliculaId}/resenas`, resenaData);
+    const token = localStorage.getItem('token');
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+
+    return this.http.post(`${this.apiUrl}/${peliculaId}/resenas`, resenaData, { headers });
   }
 }

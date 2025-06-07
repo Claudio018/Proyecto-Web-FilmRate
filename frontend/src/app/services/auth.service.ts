@@ -46,4 +46,15 @@ export class AuthService {
     }
   }
 
+  getUsuarioNombre(): string | null {
+  const token = this.getToken();
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.nombre || null;  // Ajusta 'nombre' según tu token
+  } catch {
+    return null;
+  }
+}
+
 }

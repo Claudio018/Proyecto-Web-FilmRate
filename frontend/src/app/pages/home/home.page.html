@@ -1,5 +1,16 @@
 <ion-content [style.backgroundColor]="'var(--ion-color-background)'">
-    <div class="contenido-home">
-        <h1>Página principal</h1>
-      </div>
+  <div class="contenido-home">
+    <h1>Página principal</h1>
+
+    <div *ngIf="authService.isLoggedIn(); else loginTemplate">
+      <p *ngIf="usuarioNombre">
+        Bienvenido {{ usuarioNombre }}, qué gusto verte de nuevo
+      </p>
+      <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+    </div>
+
+    <ng-template #loginTemplate>
+      <ion-button routerLink="/inicio-sesion">Iniciar Sesión</ion-button>
+    </ng-template>
+  </div>
 </ion-content>

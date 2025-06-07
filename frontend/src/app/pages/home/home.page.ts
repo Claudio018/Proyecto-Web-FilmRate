@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -6,9 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
   standalone: false
 })
-
 export class HomePage {
+  usuarioNombre: string | null = null;
 
-  constructor() {}
+  constructor(public authService: AuthService) {
+    if (this.authService.isLoggedIn()) {
+      this.usuarioNombre = this.authService.getUsuarioNombre();
+    }
+  }
 
+  logout() {
+    this.authService.logout();
+    this.usuarioNombre = null;
+  }
 }

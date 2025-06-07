@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Resena, Usuario, Pelicula } = require('../models'); // Importa desde index.js
+const authenticateToken = require('../middleware/authenticateToken');
 
 // Obtener reseñas por película
 router.get('/:peliculaId/resenas', async (req, res) => {
@@ -24,18 +25,21 @@ router.get('/:peliculaId/resenas', async (req, res) => {
 });
 
 // Crear nueva reseña y película si no existe
-router.post('/:peliculaId/resenas', async (req, res) => {
-  const { texto, valoracion, usuarioRut, titulo } = req.body;
+router.post('/:peliculaId/resenas', authenticateToken, async (req, res) => {
+  const { texto, valoracion, titulo } = req.body;
   const peliculaId = req.params.peliculaId;
 
   try {
-    // Asegura que la película exista
+    // Verificamos que la película exista o la creamos
     await Pelicula.findOrCreate({
       where: { id: peliculaId },
       defaults: { titulo }
     });
 
-    // Crea la reseña
+    // UsuarioRut viene del token (req.user)
+    const usuarioRut = req.user.rut;
+
+    // Crear la reseña con el rut del usuario autenticado
     const nuevaResena = await Resena.create({
       peliculaId,
       texto,

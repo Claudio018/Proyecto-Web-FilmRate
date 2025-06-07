@@ -23,9 +23,8 @@ El sistema cuenta con los siguientes roles:
 - RF-7 El usuario puede iniciar sesión
 - RF-8 El usuario puede añadir películas a su lista de favoritos
 - RF-9 El usuario puede dar me gusta a las reseñas publicadas
-- RF-10 El moderador puede cambiar contraseña de cuenta existente
-- RF-11 El moderador puede suspender la cuenta de un usuario
-- RF-12 El moderador puede borrar la cuenta de un usuario
+- RF-10 El moderador puede suspender la cuenta de un usuario
+- RF-11 El moderador puede borrar la cuenta de un usuario
 
 
 # RNF (Requerimientos No Funcionales)
@@ -33,9 +32,7 @@ El sistema cuenta con los siguientes roles:
 - RNF-2 Los datos de los usuarios deben ser íntegros conforme a criterios de seguridad de cifrado 
 - RNF-3 Tras 5 intentos fallidos de inicio de sesión, bloquear el acceso durante 15 minutos 
 - RNF-4 La sesión de usuario expirará después de 30 minutos de inactividad para reforzar la seguridad
-- RNF-5 Realizar copias de seguridad automáticas de la base de datos cada 24 horas
-- RNF‑6 El sistema soporta los navegadores web modernos tales como brave, opera, entre otros.
-- RNF‑7 El sistema deberá garantizar una disponibilidad del servicio de al menos 90 % mensual
+- RNF‑5 El sistema soporta los navegadores web modernos tales como brave, opera, entre otros.
 
 
 # Tecnologías Usadas
