@@ -8,7 +8,10 @@
   <div class="container">
     <div 
       class="banner" 
+      [class.expandido]="bannerExpandido"
+      (click)="toggleBanner()"
       [style.background-image]="'url(https://image.tmdb.org/t/p/w780' + pelicula.backdrop_path + ')'"
+      title="Haz clic para agrandar"
     ></div>
 
     <div class="info">
@@ -36,7 +39,6 @@
     <ng-template #noTrailer>
       <p>No hay tráiler disponible para esta película.</p>
     </ng-template>
-
 
     <h2>Reseñas</h2>
     <div class="resenas" *ngIf="resenas.length > 0; else noResenas">
