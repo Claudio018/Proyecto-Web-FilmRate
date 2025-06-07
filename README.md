@@ -57,6 +57,13 @@ La experiencia de usuario se enfoca en la simplicidad, íconos reconocibles (cor
 
 En la versión web, la navegación se organiza con un header fijo que permite moverse entre inicio, favoritos, perfil y acciones administrativas según el rol del usuario. Las vistas están claramente separadas: inicio de sesión, registro, visualización de películas, creación y lectura de reseñas, y favoritos
 
+
+# Prueba con insomnia
+
+Se validó el flujo completo de autenticación y gestión de reseñas con Insomnia: primero se registró un usuario mediante `POST /auth/register`, luego se inició sesión con `POST /auth/login`; a continuación se crearon dos reseñas usando `POST /peliculas/:peliculaId/resenas` y finalmente se recuperaron todas las reseñas con `GET /peliculas/:peliculaId/resenas`. Las capturas de estas pruebas están en la carpeta `otros/pruebas-insomnia` en la raíz del proyecto.
+
+
+
 # Instrucciones de instalación y ejecución
 
 ---
