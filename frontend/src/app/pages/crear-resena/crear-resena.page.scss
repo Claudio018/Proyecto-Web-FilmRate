@@ -1,66 +1,115 @@
-:host {
-  ion-content.resena-page {
-    --background: #1e1e1e;
-    color: #ffffff;
+ion-content.resena-page {
+  --background: #1e1e1e;
+  color: #ffffff;
+  padding: 1rem;
 
-    .form-container {
-      padding: 1rem;
+  /* Estilos de la barra de búsqueda */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+    background: #2a2a2a;
+    border-radius: 4px;
+    overflow: hidden;
 
-      .movie-title {
-        margin: 1rem 0;
-        font-size: 1rem;
-        span {
-          margin-left: 0.5rem;
-          color: #bbbbbb;
-        }
+    input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.5rem 1rem;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button {
+      background: none;
+      border: none;
+      padding: 0 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 30px;
+        height: 30px;
       }
+    }
+  }
 
-      .rating {
-        display: flex;
-        font-size: 1.5rem;
-        ion-icon {
-          cursor: pointer;
-          margin-right: 0.25rem;
-          &.filled {
-            color: #ffd700;
-          }
-          &:not(.filled) {
-            color: #555;
-          }
-        }
-        margin-bottom: 1rem;
-      }
+  /* Centrar texto dentro de la tarjeta de login */
+  ion-card-content {
+    text-align: center;
+  }
 
-      .comentarios {
-        margin-bottom: 1rem;
+  form {
+    padding: 1rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+
+    .movie-title {
+      margin: 1rem 0;
+      font-size: 1rem;
+
+      span {
+        margin-left: 0.5rem;
+        color: #bbbbbb;
       }
     }
 
-    .illustration {
+    .rating {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 1rem;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
 
-      img {
-        max-width: 80%;
-        height: auto;
-        margin-bottom: 1rem;
-      }
+      ion-icon {
+        cursor: pointer;
+        margin-right: 0.25rem;
 
-      p {
-        font-size: 1.2rem;
-        color: #eeeeee;
+        &.filled {
+          color: #ffd700;
+        }
+
+        &:not(.filled) {
+          color: #555;
+        }
       }
+    }
+
+    .comentarios {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .illustration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+
+    img {
+      max-width: 80%;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #eeeeee;
     }
   }
 }
 
+/* Lista de resultados */
 .lista-peliculas {
   max-height: 200px;
   overflow-y: auto;
   margin-bottom: 10px;
 }
-

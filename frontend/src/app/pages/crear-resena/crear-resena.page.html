@@ -5,50 +5,48 @@
 </ion-header>
 
 <ion-content class="resena-page">
-
   <!-- Si NO está logueado -->
   <ng-container *ngIf="!isLoggedIn; else loggedIn">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Inicia sesión</ion-card-title>
       </ion-card-header>
-      <ion-card-content class="ion-text-center">
+      <ion-card-content>
         <p>Debes iniciar sesión para crear una reseña.</p>
-        <ion-button expand="block" (click)="irALogin()">Ir a inicio de sesión</ion-button>
+        <ion-button expand="block" (click)="irALogin()">
+          Ir a inicio de sesión
+        </ion-button>
       </ion-card-content>
     </ion-card>
   </ng-container>
 
   <!-- Si SÍ está logueado -->
   <ng-template #loggedIn>
-    <form [formGroup]="resenaForm" (ngSubmit)="enviarResena()" class="ion-padding">
+    <form [formGroup]="resenaForm" (ngSubmit)="enviarResena()">
       <ion-grid>
         <ion-row>
-
           <!-- COLUMNA IZQUIERDA: formulario -->
           <ion-col size-sm="12" size-md="7" class="form-container">
-
-            <!-- Buscador de película -->
-            <ion-item>
-              <ion-label>Seleccione una película</ion-label>
-              <ion-searchbar
+            <!-- Buscador de película personalizado -->
+            <div class="search-bar">
+              <input
+                type="text"
                 [(ngModel)]="busqueda"
-                name="busqueda"
                 [ngModelOptions]="{ standalone: true }"
-                showCancelButton="never"
-                (ionClear)="onClearSearch()"
-                (ionInput)="onSearchPeliculas($event)">
-              </ion-searchbar>
-              <ion-button fill="clear" (click)="onBuscar()">
-                <ion-icon slot="icon-only" name="search"></ion-icon>
-              </ion-button>
-            </ion-item>
+                name="busqueda"
+                (input)="onSearchPeliculas($event)"
+                (keyup.enter)="onBuscar()"
+                placeholder="Buscar una película" />
+              <button type="button" (click)="onBuscar()">
+                <img src="assets/icon/search.png" alt="Buscar" />
+              </button>
+            </div>
 
             <!-- Lista de resultados -->
             <ion-list *ngIf="peliculasResult.length > 0" class="lista-peliculas">
-              <ion-item 
-                *ngFor="let peli of peliculasResult" 
-                button 
+              <ion-item
+                *ngFor="let peli of peliculasResult"
+                button
                 (click)="seleccionarPelicula(peli)">
                 {{ peli.titulo }}
               </ion-item>
@@ -94,13 +92,11 @@
 
           <!-- COLUMNA DERECHA: ilustración y mensaje -->
           <ion-col size-sm="12" size-md="5" class="illustration">
-            <img src="assets/imagenResena.png" alt="cabritasGuiñando">
+            <img src="assets/imagenResena.png" alt="cabritasGuiñando" />
             <p>Confiamos en tu opinión!</p>
           </ion-col>
-
         </ion-row>
       </ion-grid>
     </form>
   </ng-template>
-
 </ion-content>
