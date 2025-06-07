@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Usuario = require('../models/usuario');
+const { Usuario } = require('../models');
 const { UniqueConstraintError } = require('sequelize');
 
 const router = express.Router();
@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
 
     // Generar token con id y nombre
     const token = jwt.sign(
-      { id: usuario.id, nombre: usuario.nombre },
+      { id: usuario.id, nombre: usuario.nombre, rut: usuario.rut },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );

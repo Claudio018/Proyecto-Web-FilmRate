@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmbdService } from '../../services/tmbd.service';
 import { ResenaService } from '../../services/resena.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-pelicula',
@@ -20,7 +22,8 @@ export class PeliculaPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private tmdbService: TmbdService,
-    private resenaService: ResenaService
+    private resenaService: ResenaService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -58,5 +61,9 @@ export class PeliculaPage implements OnInit {
 
   toggleBanner() {
     this.bannerExpandido = !this.bannerExpandido;
+  }
+
+  irCrearResena() {
+    this.router.navigate(['../crear-resena', this.peliculaId]);
   }
 }

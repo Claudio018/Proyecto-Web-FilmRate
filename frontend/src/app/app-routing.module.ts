@@ -52,6 +52,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/crear-resena/crear-resena.module').then( m => m.CrearResenaPageModule)
   },
 
+  {
+    path: 'crear-resena/:id',
+    loadChildren: () => import('./pages/crear-resena/crear-resena.module').then(m => m.CrearResenaPageModule)
+  },
+
   
 
 ];

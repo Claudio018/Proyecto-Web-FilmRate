@@ -1,13 +1,106 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>crear-resena</ion-title>
+    <ion-title>Crear Reseña</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">crear-resena</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="resena-page">
+
+  <!-- Si NO está logueado -->
+  <ng-container *ngIf="!isLoggedIn; else loggedIn">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Inicia sesión</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        <p>Debes iniciar sesión para crear una reseña.</p>
+        <ion-button expand="block" (click)="irALogin()">Ir a inicio de sesión</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- Si SÍ está logueado -->
+  <ng-template #loggedIn>
+    <form [formGroup]="resenaForm" (ngSubmit)="enviarResena()" class="ion-padding">
+      <ion-grid>
+        <ion-row>
+
+          <!-- COLUMNA IZQUIERDA: formulario -->
+          <ion-col size-sm="12" size-md="7" class="form-container">
+
+            <!-- Buscador de película -->
+            <ion-item>
+              <ion-label>Seleccione una película</ion-label>
+              <ion-searchbar
+                [(ngModel)]="busqueda"
+                name="busqueda"
+                [ngModelOptions]="{ standalone: true }"
+                showCancelButton="never"
+                (ionClear)="onClearSearch()"
+                (ionInput)="onSearchPeliculas($event)">
+              </ion-searchbar>
+              <ion-button fill="clear" (click)="onBuscar()">
+                <ion-icon slot="icon-only" name="search"></ion-icon>
+              </ion-button>
+            </ion-item>
+
+            <!-- Lista de resultados -->
+            <ion-list *ngIf="peliculasResult.length > 0">
+              <ion-item
+                *ngFor="let p of peliculasResult"
+                button
+                (click)="seleccionarPelicula(p)">
+                {{ p.titulo }}
+              </ion-item>
+            </ion-list>
+
+            <!-- Título película seleccionada -->
+            <div class="movie-title" *ngIf="tituloSeleccionado">
+              <strong>Título de la película:</strong>
+              <span>{{ tituloSeleccionado }}</span>
+            </div>
+
+            <!-- Rating de estrellas -->
+            <div class="rating">
+              <ion-icon
+                *ngFor="let star of [1,2,3,4,5]"
+                name="star"
+                [class.filled]="star <= valoracionSeleccionada"
+                (click)="setValoracion(star)">
+              </ion-icon>
+            </div>
+
+            <!-- Comentarios -->
+            <ion-item class="comentarios">
+              <ion-textarea
+                placeholder="Comentarios"
+                rows="8"
+                formControlName="texto">
+              </ion-textarea>
+            </ion-item>
+            <ion-note color="danger"
+              *ngIf="resenaForm.get('texto')?.touched && resenaForm.get('texto')?.invalid">
+              La reseña es obligatoria y debe tener al menos 10 caracteres.
+            </ion-note>
+
+            <!-- Botón publicar -->
+            <ion-button
+              expand="block"
+              type="submit"
+              [disabled]="resenaForm.invalid || submitting">
+              {{ submitting ? 'Enviando...' : 'Publicar' }}
+            </ion-button>
+          </ion-col>
+
+          <!-- COLUMNA DERECHA: ilustración y mensaje -->
+          <ion-col size-sm="12" size-md="5" class="illustration">
+            <img src="assets/imagenResena.png" alt="cabritasGuiñando">
+            <p>Confiamos en tu opinión!</p>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+    </form>
+  </ng-template>
+
 </ion-content>

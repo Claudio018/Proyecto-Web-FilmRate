@@ -1,0 +1,59 @@
+:host {
+  ion-content.resena-page {
+    --background: #1e1e1e;
+    color: #ffffff;
+
+    .form-container {
+      padding: 1rem;
+
+      .movie-title {
+        margin: 1rem 0;
+        font-size: 1rem;
+        span {
+          margin-left: 0.5rem;
+          color: #bbbbbb;
+        }
+      }
+
+      .rating {
+        display: flex;
+        font-size: 1.5rem;
+        ion-icon {
+          cursor: pointer;
+          margin-right: 0.25rem;
+          &.filled {
+            color: #ffd700;
+          }
+          &:not(.filled) {
+            color: #555;
+          }
+        }
+        margin-bottom: 1rem;
+      }
+
+      .comentarios {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .illustration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+
+      img {
+        max-width: 80%;
+        height: auto;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: #eeeeee;
+      }
+    }
+  }
+}

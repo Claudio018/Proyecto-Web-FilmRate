@@ -40,7 +40,14 @@
       <p>No hay tráiler disponible para esta película.</p>
     </ng-template>
 
-    <h2>Reseñas</h2>
+    <div class="resenas-header">
+      <h2>Reseñas</h2>
+      <ion-button size="small" fill="outline" (click)="irCrearResena()">
+        Hacer reseña
+      </ion-button>
+    </div>
+
+
     <div class="resenas" *ngIf="resenas.length > 0; else noResenas">
       <div *ngFor="let r of resenas" class="resena">
         <p><strong>{{ r.usuario }}</strong></p>

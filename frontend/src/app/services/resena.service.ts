@@ -12,4 +12,8 @@ export class ResenaService {
   getResenasByPelicula(id: number) {
     return this.http.get<any[]>(`${this.apiUrl}/${id}/resenas`);
   }
+
+  crearResena(peliculaId: number, resenaData: any) {
+    return this.http.post(`${this.apiUrl}/${peliculaId}/resenas`, resenaData);
+  }
 }
