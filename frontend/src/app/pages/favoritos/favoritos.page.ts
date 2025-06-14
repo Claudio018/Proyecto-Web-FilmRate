@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-favoritos',
@@ -8,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FavoritosPage implements OnInit {
 
-  constructor() { }
+  isLoggedIn = false;
+  
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    this.isLoggedIn = this.authService.isLoggedIn();
+  }
+
+  irALogin() {
+    this.router.navigate(['/inicio-sesion']);
   }
 
 }
