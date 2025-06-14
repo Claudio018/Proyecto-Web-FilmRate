@@ -5,9 +5,12 @@
       <a routerLink="/home">
         <img src="assets/Logo.png" alt="Logo" class="logo" />
       </a>
+
       <!-- Enlaces de navegación -->
       <nav class="nav-links">
-        <a routerLink="/inicio-sesion">INICIAR SESIÓN</a>
+        <a *ngIf="!isLoggedIn" routerLink="/inicio-sesion">INICIAR SESIÓN</a>
+        <a *ngIf="isLoggedIn" routerLink="/perfil">IR A MI PERFIL</a>
+
         <a routerLink="/peliculas">PELÍCULAS</a>
         <a routerLink="/resenas">RESEÑAS</a>
         <a routerLink="/favoritos">FAVORITOS</a>
