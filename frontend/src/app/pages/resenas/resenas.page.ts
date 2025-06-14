@@ -32,7 +32,7 @@ export class ResenasPage implements OnInit {
 
           return {
             ...resena,
-            estrellas: resena.valoracion,
+            estrellas: Number(resena.valoracion) || 0,
             comentario: resena.texto,
             usuario: { username: resena.usuario },
             pelicula: detallePelicula,

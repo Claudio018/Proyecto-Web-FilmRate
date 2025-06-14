@@ -19,10 +19,10 @@
           <span class="anio">{{ resena.pelicula.release_date?.slice(0, 4) }}</span>
           <span class="categoria">{{ resena.pelicula.genres[0]?.name || 'Sin categoría' }}</span>
 
-          <!-- Estrellas con ion-icon y coloreado según valoracion -->
+          <!-- Estrellas con clase .filled según la valoración -->
           <div class="estrellas">
             <ion-icon
-              *ngFor="let star of [1,2,3,4,5]"
+              *ngFor="let star of [1, 2, 3, 4, 5]"
               name="star"
               [class.filled]="star <= resena.estrellas">
             </ion-icon>
