@@ -14,7 +14,8 @@ router.get('/:peliculaId/resenas', async (req, res) => {
     const resultado = resenas.map(r => ({
       texto: r.texto,
       valoracion: r.valoracion,
-      usuario: r.Usuario.nombre
+      usuario: r.Usuario.nombre,
+      createdAt: r.createdAt
     }));
 
     res.json(resultado);
@@ -23,6 +24,33 @@ router.get('/:peliculaId/resenas', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener reseñas' });
   }
 });
+
+router.get('/todas', async (req, res) => {
+  try {
+    const resenas = await Resena.findAll({
+      include: [
+        { model: Usuario, attributes: ['nombre'] }
+      ],
+      order: [['updatedAt', 'DESC']]
+    });
+
+    const resultado = resenas.map(r => ({
+      id: r.id,
+      peliculaId: r.peliculaId,
+      texto: r.texto,
+      valoracion: r.valoracion,
+      usuario: r.Usuario.nombre,
+      createdAt: r.createdAt,
+      updatedAt: r.updatedAt
+    }));
+
+    res.json(resultado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener reseñas' });
+  }
+});
+
 
 // Crear nueva reseña y película si no existe
 router.post('/:peliculaId/resenas', authenticateToken, async (req, res) => {

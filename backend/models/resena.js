@@ -25,6 +25,6 @@ module.exports = (sequelize) => {
     }
   }, {
     tableName: 'Resenas',
-    timestamps: false
+    timestamps: true
   });
 };

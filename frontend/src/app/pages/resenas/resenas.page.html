@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Reseñas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="resenas-page">
+  <div *ngIf="resenas.length > 0; else sinResenas">
+    <div *ngFor="let resena of resenas" class="resena-card">
+      <img
+        [src]="'https://image.tmdb.org/t/p/w200' + resena.pelicula.poster_path"
+        alt="Carátula"
+        class="caratula"
+        loading="lazy" />
+
+      <div class="info-resena">
+        <div class="datos-arriba">
+          <h2 class="titulo">{{ resena.pelicula.title }}</h2>
+          <span class="anio">{{ resena.pelicula.release_date?.slice(0, 4) }}</span>
+          <span class="categoria">{{ resena.pelicula.genres[0]?.name || 'Sin categoría' }}</span>
+
+          <!-- Estrellas con ion-icon y coloreado según valoracion -->
+          <div class="estrellas">
+            <ion-icon
+              *ngFor="let star of [1,2,3,4,5]"
+              name="star"
+              [class.filled]="star <= resena.estrellas">
+            </ion-icon>
+          </div>
+
+          <span class="usuario">Usuario: {{ resena.usuario?.username }}</span>
+        </div>
+
+        <p class="comentario">{{ resena.comentario }}</p>
+
+        <div class="fechas">
+          <span>Creado: {{ resena.created_at | date:'short' }}</span>
+          <span>Modificado: {{ resena.updated_at | date:'short' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #sinResenas>
+    <p>Aún no hay reseñas</p>
+  </ng-template>
+</ion-content>
