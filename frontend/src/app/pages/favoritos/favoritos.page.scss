@@ -3,13 +3,74 @@ ion-content.favoritos-page {
   color: #ffffff;
   padding: 1rem;
 
-  
-
   /* Centrar texto dentro de la tarjeta de login */
   ion-card-content {
     text-align: center;
   }
 
-  
-}
+  .favorito-card {
+    display: flex;
+    width: 1200px;
+    height: 200px;
+    margin: 10px auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    background-color: #2a2a2a;
+    transition: background-color 0.3s ease;
 
+    &:hover {
+      background-color: #3a3a3a;
+    }
+
+    .caratula {
+      width: 140px;
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+
+    .info-pelicula {
+      padding: 10px 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .datos-arriba {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .titulo {
+          font-size: 22px;
+          font-weight: bold;
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 500px;
+        }
+
+        .anio, .duracion, .categoria {
+          font-size: 14px;
+          color: #bbb;
+          white-space: nowrap;
+        }
+      }
+
+      .sinopsis {
+        font-size: 16px;
+        color: #ddd;
+        margin-top: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* limita a 3 líneas */
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+}

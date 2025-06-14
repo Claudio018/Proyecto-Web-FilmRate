@@ -22,6 +22,29 @@
 
   <!-- Si SÍ está logueado -->
   <ng-template #loggedIn>
-    <p>Bienvenido, estás logueado.</p>
+    <div *ngIf="favoritos.length > 0; else noFavoritos">
+      <div *ngFor="let pelicula of favoritos" 
+           class="favorito-card" 
+           (click)="irAPelicula(pelicula.id)">
+        <img 
+          [src]="'https://image.tmdb.org/t/p/w200' + pelicula.poster_path" 
+          alt="Carátula" 
+          class="caratula" 
+          loading="lazy" 
+        />
+        <div class="info-pelicula">
+          <div class="datos-arriba">
+            <h2 class="titulo">{{ pelicula.title }}</h2>
+            <span class="anio">{{ pelicula.release_date?.slice(0,4) }}</span>
+            <span class="duracion">{{ pelicula.runtime }} min</span>
+            <span class="categoria">{{ pelicula.genres[0]?.name || 'Sin categoría' }}</span>
+          </div>
+          <p class="sinopsis">{{ pelicula.overview }}</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #noFavoritos>
+      <p>No tienes películas favoritas aún.</p>
+    </ng-template>
   </ng-template>
 </ion-content>

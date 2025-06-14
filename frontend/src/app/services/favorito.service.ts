@@ -30,4 +30,13 @@ export class FavoritoService {
       { headers: this.getHeaders() }
     );
   }
+
+  getFavoritosIds() {
+    return this.http.get<{ peliculasFavoritasIds: number[] }>(
+      this.apiUrl,
+      { headers: this.getHeaders() }
+    );
+  }
+
+
 }
