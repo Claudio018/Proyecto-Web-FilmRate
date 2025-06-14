@@ -5,4 +5,7 @@ export interface Usuario {
   region: string;
   comuna: string;
   contrasena: string;
+
+  foto_url: string;       
+  descripcion: string;
 }

@@ -28,6 +28,14 @@ module.exports = (sequelize) => {
     contrasena: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    descripcion: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    fotoPerfil: {
+      type: DataTypes.STRING,
+      allowNull: true,
     }
   }, {
     tableName: 'Usuarios',

@@ -1,0 +1,95 @@
+:host {
+  --card-width: 100%;
+  --card-max-width: 1000px;
+}
+
+.perfil-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+
+  .card {
+    width: var(--card-width);
+    max-width: var(--card-max-width);
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.2rem;
+    color: #fff;
+  }
+
+  .perfil-card {
+    display: flex;
+    align-items: center;
+    min-height: 250px;
+
+    ion-avatar {
+      width: 120px;
+      height: 120px;
+      margin-right: 1rem;
+      border: 2px solid #fff;
+    }
+
+    .info {
+      flex: 1;
+      h2 { margin: 0 0 0.4rem; }
+      p  { opacity: 0.8; }
+    }
+  }
+
+  .favoritos-card {
+    min-height: 250px;
+
+    h3 {
+      margin: 0 0 0.8rem;
+      font-weight: 600;
+    }
+
+    .pelis-wrapper {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.8rem;
+
+      .peli {
+        width: 150px;
+        flex-shrink: 0;
+        text-align: center;
+
+        img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+
+        span {
+          display: block;
+          margin-top: 0.4rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .stats-card {
+    min-height: 180px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    text-align: center;
+
+    .stat {
+      .numero {
+        font-size: 2rem;
+        font-weight: bold;
+        display: block;
+        line-height: 100px;
+      }
+
+      .label {
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }
+    }
+  }
+}
