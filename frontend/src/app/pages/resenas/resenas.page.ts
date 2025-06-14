@@ -17,7 +17,9 @@ export class ResenasPage implements OnInit {
     private resenaService: ResenaService
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
     this.cargarResenasConDetalles();
   }
 
@@ -25,7 +27,6 @@ export class ResenasPage implements OnInit {
     try {
       const resenasBackend: Resena[] = await this.resenaService.getTodasResenas().toPromise() ?? [];
 
-      // Para cada reseña, obtener el detalle de su película
       const resenasConDetalles = await Promise.all(
         resenasBackend.map(async (resena) => {
           const detallePelicula = await this.tmbdService.getMovieDetail(resena.peliculaId).toPromise();
@@ -37,7 +38,8 @@ export class ResenasPage implements OnInit {
             usuario: { username: resena.usuario },
             pelicula: detallePelicula,
             created_at: resena.createdAt,
-            updated_at: resena.updatedAt
+            updated_at: resena.updatedAt,
+            expandido: false // <- propiedad para controlar expandir/contraer
           };
         })
       );
@@ -49,4 +51,7 @@ export class ResenasPage implements OnInit {
     }
   }
 
+  toggleExpandir(index: number) {
+    this.resenas[index].expandido = !this.resenas[index].expandido;
+  }
 }

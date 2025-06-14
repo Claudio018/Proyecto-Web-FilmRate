@@ -6,7 +6,7 @@
 
 <ion-content class="resenas-page">
   <div *ngIf="resenas.length > 0; else sinResenas">
-    <div *ngFor="let resena of resenas" class="resena-card">
+    <div *ngFor="let resena of resenas; let i = index" class="resena-card">
       <img
         [src]="'https://image.tmdb.org/t/p/w200' + resena.pelicula.poster_path"
         alt="Carátula"
@@ -19,7 +19,6 @@
           <span class="anio">{{ resena.pelicula.release_date?.slice(0, 4) }}</span>
           <span class="categoria">{{ resena.pelicula.genres[0]?.name || 'Sin categoría' }}</span>
 
-          <!-- Estrellas con clase .filled según la valoración -->
           <div class="estrellas">
             <ion-icon
               *ngFor="let star of [1, 2, 3, 4, 5]"
@@ -31,7 +30,13 @@
           <span class="usuario">Usuario: {{ resena.usuario?.username }}</span>
         </div>
 
-        <p class="comentario">{{ resena.comentario }}</p>
+        <p
+          class="comentario"
+          [class.expandido]="resena.expandido"
+          (click)="toggleExpandir(i)"
+          title="Haz click para {{ resena.expandido ? 'contraer' : 'expandir' }}">
+          {{ resena.comentario }}
+        </p>
 
         <div class="fechas">
           <span>Creado: {{ resena.created_at | date:'short' }}</span>
