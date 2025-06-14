@@ -21,7 +21,11 @@
         <p>{{ pelicula.overview }}</p>
         <p><strong>Rating:</strong> {{ pelicula.vote_average }}</p>
       </div>
+      <div *ngIf="isLoggedIn" (click)="toggleFavorito()" style="cursor:pointer; font-size: 48px; color: red;">
+        <ion-icon [name]="esFavorito ? 'heart' : 'heart-outline'"></ion-icon>
+      </div>
     </div>
+
 
     <h2>Trailer</h2>
 

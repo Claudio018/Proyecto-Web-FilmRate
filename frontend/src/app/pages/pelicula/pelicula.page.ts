@@ -4,6 +4,9 @@ import { TmbdService } from '../../services/tmbd.service';
 import { ResenaService } from '../../services/resena.service';
 import { Router } from '@angular/router';
 import { ViewWillEnter } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
+import { FavoritoService } from '../../services/favorito.service';
+
 
 
 
@@ -16,10 +19,20 @@ import { ViewWillEnter } from '@ionic/angular';
 export class PeliculaPage implements OnInit {
 
   ionViewWillEnter() {
+    this.peliculaId = +this.route.snapshot.paramMap.get('id')!;
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.loadMovie();
+
+    if (this.isLoggedIn) {
+      this.checkFavorito();
+    }
     this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
       this.resenas = data;
     });
   }
+
+  isLoggedIn: boolean = false;
+  esFavorito: boolean = false;
 
   peliculaId!: number;
   pelicula: any = null;
@@ -32,7 +45,9 @@ export class PeliculaPage implements OnInit {
     private route: ActivatedRoute,
     private tmdbService: TmbdService,
     private resenaService: ResenaService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private favoritoService: FavoritoService
   ) {}
 
   ngOnInit() {
@@ -75,4 +90,24 @@ export class PeliculaPage implements OnInit {
   irCrearResena() {
     this.router.navigate(['/crear-resena', this.peliculaId]);
   }
+
+  checkFavorito() {
+    this.favoritoService.estaFavorito(this.peliculaId).subscribe((resp: any) => {
+      this.esFavorito = resp.esFavorito;
+    });
+  }
+
+  toggleFavorito() {
+  if (!this.isLoggedIn) return;
+
+  const titulo = this.pelicula?.titulo ;
+
+  this.favoritoService.toggleFavorito(this.peliculaId, titulo).subscribe(() => {
+    this.esFavorito = !this.esFavorito;  // cambia el estado local al contrario
+  });
+}
+
+
+
+
 }

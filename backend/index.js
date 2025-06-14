@@ -3,11 +3,12 @@ const cors = require('cors');
 require('dotenv').config();
 
 //xd falta agregar las demas
-const { sequelize, Usuario, Resena } = require('./models');
+const { sequelize, Usuario, Resena,Favorito } = require('./models');
 
 // rutas
 const authRoutes = require('./routes/auth');
 const resenaRoutes = require('./routes/resenas');
+const favoritosRouter = require('./routes/favoritos');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/peliculas', resenaRoutes);
+app.use('/favoritos', favoritosRouter);
 
 app.get('/', (req, res) => {
   res.send('se conecto a bd');
