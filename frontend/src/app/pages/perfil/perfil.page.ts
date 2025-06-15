@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { AuthService } from '../../services/auth.service';
 import { TmbdService } from '../../services/tmbd.service';
@@ -18,37 +19,55 @@ export class PerfilPage implements OnInit {
   stats?: Estadisticas;
   cargando = true;
 
-  // Nuevas propiedades
   esMiPerfil = false;
   editandoDescripcion = false;
   nuevaDescripcion = '';
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private usuarioSvc: UsuarioService,
     private auth: AuthService,
     private tmdb: TmbdService
   ) {}
 
   ngOnInit() {
-    const rut = this.auth.getUsuarioRut();
-    if (!rut) return;
+    const nombre = this.route.snapshot.paramMap.get('nombre');
 
-    // 1) Perfil
-    this.usuarioSvc.getPerfil(rut).subscribe({
+    if (!nombre) {
+      this.router.navigate(['/']);
+      return;
+    }
+
+    this.usuarioSvc.getPerfilPorNombre(nombre).subscribe({
       next: perfil => {
         this.perfil = perfil;
         this.nuevaDescripcion = perfil.descripcion || '';
 
         const rutActual = this.auth.getUsuarioRut();
-        console.log('rut actual:', rutActual);
-        console.log('rut perfil:', perfil.rut);
         this.esMiPerfil = rutActual === perfil.rut;
-        console.log('esMiPerfil:', this.esMiPerfil);
-      },
-      error: err => console.error('Error al cargar perfil:', err)
-    });
 
-    // 2) Favoritos
+        this.cargarFavoritos(perfil.rut);
+
+        this.usuarioSvc.getEstadisticas(perfil.rut).subscribe({
+          next: est => {
+            this.stats = est;
+            this.cargando = false;
+          },
+          error: err => {
+            console.error('Error al cargar estadísticas:', err);
+            this.cargando = false;
+          }
+        });
+      },
+      error: err => {
+        console.error('Error al obtener perfil por nombre:', err);
+        this.router.navigate(['/']);
+      }
+    });
+  }
+
+  cargarFavoritos(rut: string) {
     this.usuarioSvc.getFavoritosIds(rut).subscribe({
       next: records => {
         const ids = records.map(r => r.peliculaId);
@@ -65,18 +84,6 @@ export class PerfilPage implements OnInit {
         });
       },
       error: err => console.error('Error al obtener favoritos:', err)
-    });
-
-    // 3) Estadísticas
-    this.usuarioSvc.getEstadisticas(rut).subscribe({
-      next: est => {
-        this.stats = est;
-        this.cargando = false;
-      },
-      error: err => {
-        console.error('Error al cargar estadísticas:', err);
-        this.cargando = false;
-      }
     });
   }
 
@@ -95,9 +102,11 @@ export class PerfilPage implements OnInit {
       },
       error: err => {
         console.error('Error al actualizar descripción:', err);
-        // Aquí puedes mostrar un mensaje de error al usuario
       }
     });
   }
 
+  irAPelicula(peliculaId: number) {
+    this.router.navigate(['/pelicula', peliculaId]);
+  }
 }

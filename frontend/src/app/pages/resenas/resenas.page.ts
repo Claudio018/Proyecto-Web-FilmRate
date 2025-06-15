@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TmbdService } from '../../services/tmbd.service';
 import { ResenaService } from '../../services/resena.service';
 import { Resena } from 'src/app/models/Resena';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resenas',
@@ -14,7 +15,8 @@ export class ResenasPage implements OnInit {
 
   constructor(
     private tmbdService: TmbdService,
-    private resenaService: ResenaService
+    private resenaService: ResenaService,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -36,10 +38,11 @@ export class ResenasPage implements OnInit {
             estrellas: Number(resena.valoracion) || 0,
             comentario: resena.texto,
             usuario: { username: resena.usuario },
+            usuarioRut: resena.usuarioRut,   // <-- agregamos usuarioRut aquí
             pelicula: detallePelicula,
             created_at: resena.createdAt,
             updated_at: resena.updatedAt,
-            expandido: false // <- propiedad para controlar expandir/contraer
+            expandido: false
           };
         })
       );
@@ -53,5 +56,10 @@ export class ResenasPage implements OnInit {
 
   toggleExpandir(index: number) {
     this.resenas[index].expandido = !this.resenas[index].expandido;
+  }
+
+  irAlPerfil(nombreUsuario?: string) {
+    if (!nombreUsuario) return;
+    this.router.navigate(['/perfil', nombreUsuario]);
   }
 }

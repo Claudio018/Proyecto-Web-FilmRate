@@ -9,7 +9,8 @@
       <!-- Enlaces de navegación -->
       <nav class="nav-links">
         <a *ngIf="!isLoggedIn" routerLink="/inicio-sesion">INICIAR SESIÓN</a>
-        <a *ngIf="isLoggedIn" routerLink="/perfil">IR A MI PERFIL</a>
+
+        <a *ngIf="isLoggedIn" [routerLink]="['/perfil', usuarioNombre]">IR A MI PERFIL</a>
 
         <a routerLink="/peliculas">PELÍCULAS</a>
         <a routerLink="/resenas">RESEÑAS</a>

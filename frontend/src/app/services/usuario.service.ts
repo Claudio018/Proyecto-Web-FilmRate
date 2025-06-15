@@ -52,5 +52,8 @@ export class UsuarioService {
     );
   }
 
+  getPerfilPorNombre(nombre: string) {
+    return this.http.get<Usuario>(`${this.apiUrl}/usuario/nombre/${nombre}`);
+  }
 
 }

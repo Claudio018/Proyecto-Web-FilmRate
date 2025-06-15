@@ -14,10 +14,15 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent implements OnInit {
 
   isLoggedIn = false;
+  usuarioNombre?: string| null;
 
   constructor(private authService: AuthService){}
-  
+
   ngOnInit(){
     this.isLoggedIn = this.authService.isLoggedIn();
+    if (this.isLoggedIn) {
+            this.usuarioNombre = this.authService.getUsuarioNombre();
+
+    }
   }
 }

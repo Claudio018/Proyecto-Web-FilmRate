@@ -27,7 +27,12 @@
             </ion-icon>
           </div>
 
-          <span class="usuario">Usuario: {{ resena.usuario?.username }}</span>
+          <span class="usuario">
+            Usuario: 
+            <ion-button fill="clear" size="small" (click)="irAlPerfil(resena.usuario?.username)">
+              {{ resena.usuario?.username }}
+            </ion-button>
+          </span>
         </div>
 
         <p

@@ -44,6 +44,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
   {
+    path: 'perfil/:nombre',
+    loadChildren: () => import('./pages/perfil/perfil.module').then(m => m.PerfilPageModule)
+  },
+  {
     path: 'leer-resena',
     loadChildren: () => import('./pages/leer-resena/leer-resena.module').then( m => m.LeerResenaPageModule)
   },
