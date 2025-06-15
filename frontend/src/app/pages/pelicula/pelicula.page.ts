@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmbdService } from '../../services/tmbd.service';
 import { ResenaService } from '../../services/resena.service';
 import { Router } from '@angular/router';
-import { ViewWillEnter } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { FavoritoService } from '../../services/favorito.service';
-
-
-
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-pelicula',
@@ -16,20 +13,7 @@ import { FavoritoService } from '../../services/favorito.service';
   styleUrls: ['./pelicula.page.scss'],
   standalone: false
 })
-export class PeliculaPage implements OnInit {
-
-  ionViewWillEnter() {
-    this.peliculaId = +this.route.snapshot.paramMap.get('id')!;
-    this.isLoggedIn = this.authService.isLoggedIn();
-    this.loadMovie();
-
-    if (this.isLoggedIn) {
-      this.checkFavorito();
-    }
-    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
-      this.resenas = data;
-    });
-  }
+export class PeliculaPage implements ViewWillEnter {
 
   isLoggedIn: boolean = false;
   esFavorito: boolean = false;
@@ -50,9 +34,18 @@ export class PeliculaPage implements OnInit {
     private favoritoService: FavoritoService
   ) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.peliculaId = +this.route.snapshot.paramMap.get('id')!;
+    this.isLoggedIn = this.authService.isLoggedIn();
     this.loadMovie();
+
+    if (this.isLoggedIn) {
+      this.checkFavorito();
+    }
+
+    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
+      this.resenas = data;
+    });
   }
 
   loadMovie() {
@@ -70,16 +63,8 @@ export class PeliculaPage implements OnInit {
         this.trailerUrl = `https://www.youtube.com/embed/${trailer.key}`;
       } else {
         trailer = videos.find((video: any) => video.site === 'YouTube');
-        if (trailer) {
-          this.trailerUrl = `https://www.youtube.com/embed/${trailer.key}`;
-        } else {
-          this.trailerUrl = null;
-        }
+        this.trailerUrl = trailer ? `https://www.youtube.com/embed/${trailer.key}` : null;
       }
-    });
-
-    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
-      this.resenas = data;
     });
   }
 
@@ -98,16 +83,12 @@ export class PeliculaPage implements OnInit {
   }
 
   toggleFavorito() {
-  if (!this.isLoggedIn) return;
+    if (!this.isLoggedIn) return;
 
-  const titulo = this.pelicula?.titulo ;
+    const titulo = this.pelicula?.titulo;
 
-  this.favoritoService.toggleFavorito(this.peliculaId, titulo).subscribe(() => {
-    this.esFavorito = !this.esFavorito;  // cambia el estado local al contrario
-  });
-}
-
-
-
-
+    this.favoritoService.toggleFavorito(this.peliculaId, titulo).subscribe(() => {
+      this.esFavorito = !this.esFavorito;
+    });
+  }
 }
