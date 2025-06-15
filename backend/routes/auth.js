@@ -83,10 +83,12 @@ router.post('/login', async (req, res) => {
       console.log('Contraseña incorrecta para usuario:', nombre);
       return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
-
+    if (usuario.suspendido) {
+      return res.status(403).json({ error: 'Tu cuenta está suspendida' });
+    }
     // Generar token con id y nombre
     const token = jwt.sign(
-      { id: usuario.id, nombre: usuario.nombre, rut: usuario.rut },
+      { id: usuario.id, nombre: usuario.nombre, rut: usuario.rut, esModerador: usuario.esModerador  },
       process.env.JWT_SECRET,
       { expiresIn: '30m' }
     );

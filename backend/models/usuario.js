@@ -36,6 +36,16 @@ module.exports = (sequelize) => {
     fotoPerfil: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    esModerador: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    suspendido: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     }
   }, {
     tableName: 'Usuarios',

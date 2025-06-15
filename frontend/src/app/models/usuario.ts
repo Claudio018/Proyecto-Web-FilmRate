@@ -5,7 +5,7 @@ export interface Usuario {
   region: string;
   comuna: string;
   contrasena: string;
-
   fotoPerfil: string | null;    
   descripcion: string;
+  suspendido: boolean;   
 }

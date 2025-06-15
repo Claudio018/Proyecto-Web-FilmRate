@@ -24,47 +24,55 @@ const Favorito = require('./favorito')(sequelize);
 const Seguidor = require('./seguidores')(sequelize);
 const LikeResena = require('./likeResena')(sequelize);
 
+// Relaciones con borrado en cascada
+Usuario.hasMany(Resena, { foreignKey: 'usuarioRut', onDelete: 'CASCADE' });
+Resena.belongsTo(Usuario, { foreignKey: 'usuarioRut', onDelete: 'CASCADE' });
 
-// Relaciones
-Usuario.hasMany(Resena, { foreignKey: 'usuarioRut' });
-Resena.belongsTo(Usuario, { foreignKey: 'usuarioRut' });
+Pelicula.hasMany(Resena, { foreignKey: 'peliculaId', onDelete: 'CASCADE' });
+Resena.belongsTo(Pelicula, { foreignKey: 'peliculaId', onDelete: 'CASCADE' });
 
-Pelicula.hasMany(Resena, { foreignKey: 'peliculaId' });
-Resena.belongsTo(Pelicula, { foreignKey: 'peliculaId' });
-
-Usuario.belongsToMany(Pelicula, { through: Favorito, foreignKey: 'usuarioRut', otherKey: 'peliculaId' });
-Pelicula.belongsToMany(Usuario, { through: Favorito, foreignKey: 'peliculaId', otherKey: 'usuarioRut' });
-
-
+Usuario.belongsToMany(Pelicula, { 
+  through: Favorito, 
+  foreignKey: 'usuarioRut', 
+  otherKey: 'peliculaId', 
+  onDelete: 'CASCADE' 
+});
+Pelicula.belongsToMany(Usuario, { 
+  through: Favorito, 
+  foreignKey: 'peliculaId', 
+  otherKey: 'usuarioRut', 
+  onDelete: 'CASCADE' 
+});
 
 Usuario.belongsToMany(Usuario, {
   through: Seguidor,
   as: 'Siguiendo',
   foreignKey: 'seguidorRut',
-  otherKey: 'seguidoRut'
+  otherKey: 'seguidoRut',
+  onDelete: 'CASCADE',
 });
 Usuario.belongsToMany(Usuario, {
   through: Seguidor,
   as: 'Seguidores',
   foreignKey: 'seguidoRut',
-  otherKey: 'seguidorRut'
+  otherKey: 'seguidorRut',
+  onDelete: 'CASCADE',
 });
 
 Usuario.belongsToMany(Resena, {
   through: LikeResena,
   as: 'ResenasLikeadas',
   foreignKey: 'usuarioRut',
-  otherKey: 'resenaId'
+  otherKey: 'resenaId',
+  onDelete: 'CASCADE',
 });
-
 Resena.belongsToMany(Usuario, {
   through: LikeResena,
   as: 'UsuariosQueDieronLike',
   foreignKey: 'resenaId',
-  otherKey: 'usuarioRut'
+  otherKey: 'usuarioRut',
+  onDelete: 'CASCADE',
 });
-
-
 
 module.exports = {
   sequelize,

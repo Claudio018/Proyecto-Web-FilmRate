@@ -13,6 +13,7 @@ const usuarioRoutes = require('./routes/usuario');
 const rutaSeguimiento = require('./routes/seguimiento');
 const perfilRouter = require('./routes/perfil');
 const likesResenaRoutes = require('./routes/likeResena');
+const moderadorRoutes = require('./routes/moderador');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,6 +28,7 @@ app.use('/usuario', usuarioRoutes);
 app.use('/seguimiento', rutaSeguimiento);
 app.use('/perfil', perfilRouter);
 app.use('/peliculas/likes', likesResenaRoutes);
+app.use('/moderador', moderadorRoutes);
 
 
 app.get('/', (req, res) => {

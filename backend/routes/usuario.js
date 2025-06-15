@@ -3,6 +3,7 @@ const router = express.Router();
 const { Usuario, Seguidor } = require('../models');
 const authenticateToken = require('../middleware/authenticateToken');
 
+
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const rut = req.user.rut;
@@ -29,7 +30,7 @@ router.get('/nombre/:nombre', async (req, res) => {
 
     const usuario = await Usuario.findOne({
       where: { nombre },
-      attributes: ['rut', 'nombre', 'fotoPerfil', 'descripcion'] 
+      attributes: ['rut', 'nombre', 'fotoPerfil', 'descripcion', 'suspendido']
     });
 
     if (!usuario) {

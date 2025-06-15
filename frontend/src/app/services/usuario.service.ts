@@ -66,7 +66,7 @@ export class UsuarioService {
 
   dejarDeSeguir(seguidorRut: string, seguidoRut: string) {
     return this.http.delete(
-      `${this.apiUrl}/seguimiento/${seguidorRut}/dejar/${seguidoRut}`,
+      `${this.apiUrl}/seguimiento/usuarios/${seguidorRut}/dejar/${seguidoRut}`,
       { headers: this.getHeaders() }
     );
   }
@@ -74,6 +74,29 @@ export class UsuarioService {
   verificaSiLoSigue(seguidorRut: string, seguidoRut: string) {
     return this.http.get<{ sigue: boolean }>(
       `${this.apiUrl}/seguimiento/${seguidorRut}/seguido/${seguidoRut}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  suspenderCuenta(rut: string) {
+    return this.http.put(
+      `${this.apiUrl}/moderador/usuarios/${rut}/suspender`,
+      {},
+      { headers: this.getHeaders() }
+    );
+  }
+
+  quitarSuspensionCuenta(rut: string) {
+    return this.http.put(
+      `${this.apiUrl}/moderador/usuarios/${rut}/quitar-suspension`,
+      {},
+      { headers: this.getHeaders() }
+    );
+  }
+
+  eliminarCuenta(rut: string) {
+    return this.http.delete(
+      `${this.apiUrl}/moderador/usuarios/${rut}`,
       { headers: this.getHeaders() }
     );
   }

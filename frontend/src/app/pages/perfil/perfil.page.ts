@@ -6,7 +6,7 @@ import { TmbdService } from '../../services/tmbd.service';
 import { Usuario } from '../../models/usuario';
 import { Estadisticas } from '../../models/estadisticas';
 import { forkJoin } from 'rxjs';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil',
@@ -26,6 +26,7 @@ export class PerfilPage {
 
   loSigue = false;
   cargandoSeguimiento = true;
+  esModerador = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,10 +34,12 @@ export class PerfilPage {
     private usuarioSvc: UsuarioService,
     private auth: AuthService,
     private tmdb: TmbdService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {}
 
   ionViewWillEnter() {
+    this.esModerador = this.auth.isModerador();
     const nombre = this.route.snapshot.paramMap.get('nombre');
 
     if (!nombre) {
@@ -187,5 +190,94 @@ export class PerfilPage {
         }
       });
     }
+  }
+
+  // FUNCIONES DE MODERADOR
+
+  async suspenderCuenta() {
+    if (!this.perfil) return;
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar suspensión',
+      message: `¿Estás seguro de suspender la cuenta de ${this.perfil.nombre}?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { 
+          text: 'Suspender',
+          handler: () => {
+            this.usuarioSvc.suspenderCuenta(this.perfil!.rut!).subscribe({
+              next: async () => {
+                this.perfil!.suspendido = true;
+                const toast = await this.toastController.create({ message: 'Cuenta suspendida.', duration: 2000,color: 'danger' });
+                toast.present();
+              },
+              error: async () => {
+                const toast = await this.toastController.create({ message: 'Error al suspender cuenta.', duration: 2000 });
+                toast.present();
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async quitarSuspension() {
+    if (!this.perfil) return;
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar quitar suspensión',
+      message: `¿Estás seguro de quitar la suspensión a la cuenta de ${this.perfil.nombre}?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { 
+          text: 'Quitar suspensión',
+          handler: () => {
+            this.usuarioSvc.quitarSuspensionCuenta(this.perfil!.rut!).subscribe({
+              next: async () => {
+                this.perfil!.suspendido = false;
+                const toast = await this.toastController.create({ message: 'Suspensión quitada.', duration: 2000,color: 'success' });
+                toast.present();
+              },
+              error: async () => {
+                const toast = await this.toastController.create({ message: 'Error al quitar suspensión.', duration: 2000 });
+                toast.present();
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async eliminarCuenta() {
+    if (!this.perfil) return;
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: `¿Estás seguro de eliminar la cuenta de ${this.perfil.nombre}? Esta acción es irreversible.`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { 
+          text: 'Eliminar',
+          handler: () => {
+            this.usuarioSvc.eliminarCuenta(this.perfil!.rut!).subscribe({
+              next: async () => {
+                const toast = await this.toastController.create({ message: 'Cuenta eliminada.', duration: 2000,color: 'danger' });
+                toast.present();
+                this.router.navigate(['/']);
+              },
+              error: async () => {
+                const toast = await this.toastController.create({ message: 'Error al eliminar cuenta.', duration: 2000 });
+                toast.present();
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

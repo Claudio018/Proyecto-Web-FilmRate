@@ -44,6 +44,38 @@
         </ion-button>
       </ng-template>
     </div>
+
+    <!-- BOTONES MODERADOR -->
+    <div *ngIf="esModerador && !esMiPerfil" class="moderador-buttons" style="margin-top: 1em;">
+      <ion-button
+        *ngIf="!perfil?.suspendido"
+        color="warning"
+        (click)="suspenderCuenta()"
+        size="small"
+        expand="block"
+      >
+        Suspender cuenta
+      </ion-button>
+
+      <ion-button
+        *ngIf="perfil?.suspendido"
+        color="success"
+        (click)="quitarSuspension()"
+        size="small"
+        expand="block"
+      >
+        Quitar suspensión
+      </ion-button>
+
+      <ion-button
+        color="danger"
+        (click)="eliminarCuenta()"
+        size="small"
+        expand="block"
+      >
+        Eliminar cuenta
+      </ion-button>
+    </div>
   </section>
 
   <!-- FAVORITOS -->
