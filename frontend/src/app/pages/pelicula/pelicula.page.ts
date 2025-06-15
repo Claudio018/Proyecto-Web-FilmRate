@@ -14,7 +14,6 @@ import { ViewWillEnter } from '@ionic/angular';
   standalone: false
 })
 export class PeliculaPage implements ViewWillEnter {
-
   isLoggedIn: boolean = false;
   esFavorito: boolean = false;
 
@@ -44,7 +43,7 @@ export class PeliculaPage implements ViewWillEnter {
     }
 
     this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
-      this.resenas = data;
+      this.resenas = data.map((r: any) => ({ ...r, expandido: false }));
     });
   }
 
@@ -84,11 +83,13 @@ export class PeliculaPage implements ViewWillEnter {
 
   toggleFavorito() {
     if (!this.isLoggedIn) return;
-
     const titulo = this.pelicula?.titulo;
-
     this.favoritoService.toggleFavorito(this.peliculaId, titulo).subscribe(() => {
       this.esFavorito = !this.esFavorito;
     });
+  }
+
+  toggleExpandir(index: number) {
+    this.resenas[index].expandido = !this.resenas[index].expandido;
   }
 }

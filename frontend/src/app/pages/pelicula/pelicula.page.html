@@ -24,19 +24,13 @@
       <div *ngIf="isLoggedIn" (click)="toggleFavorito()" class="icono-favorito">
         <ion-icon [name]="esFavorito ? 'heart' : 'heart-outline'"></ion-icon>
       </div>
-
     </div>
 
-
     <h2>Trailer</h2>
-
     <ng-container *ngIf="trailerUrl; else noTrailer">
       <ion-card>
         <div class="video-container">
-          <iframe
-            [src]="trailerUrl | safe"
-            allowfullscreen
-          ></iframe>
+          <iframe [src]="trailerUrl | safe" allowfullscreen></iframe>
         </div>
       </ion-card>
     </ng-container>
@@ -52,13 +46,27 @@
       </ion-button>
     </div>
 
-
     <div class="resenas" *ngIf="resenas.length > 0; else noResenas">
-      <div *ngFor="let r of resenas" class="resena">
-        <p>Usuario <strong>{{ r.usuario }}</strong></p>
-        <p>{{ r.texto }}</p>
+      <div *ngFor="let r of resenas; let i = index" class="resena">
+        <div class="resena-meta">
+          <span class="usuario">Usuario: {{ r.usuario }}</span>
+          <div class="estrellas">
+            <ion-icon
+              *ngFor="let star of [1,2,3,4,5]"
+              [name]="star <= r.valoracion ? 'star' : 'star-outline'"
+              [class.filled]="star <= r.valoracion"
+            ></ion-icon>
+          </div>
+        </div>
+        <p class="comentario" [class.expandido]="r.expandido" (click)="toggleExpandir(i)">
+          {{ r.texto }}
+        </p>
+        <div class="fecha">
+          <span>{{ r.created_at | date: 'short' }}</span>
+        </div>
       </div>
     </div>
+
     <ng-template #noResenas>
       <p>No hay reseñas disponibles.</p>
     </ng-template>
