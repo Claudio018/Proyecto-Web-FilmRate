@@ -12,6 +12,7 @@ router.get('/:peliculaId/resenas', async (req, res) => {
     });
 
     const resultado = resenas.map(r => ({
+      id: r.id,  
       texto: r.texto,
       valoracion: r.valoracion,
       usuario: r.Usuario.nombre,

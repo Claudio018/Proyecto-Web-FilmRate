@@ -23,6 +23,8 @@ const Pelicula = require('./pelicula')(sequelize);
 const Favorito = require('./favorito')(sequelize);
 const EstadisticaUsuario = require('./estadisticaUsuario')(sequelize);
 const Seguidor = require('./seguidores')(sequelize);
+const LikeResena = require('./likeResena')(sequelize);
+
 
 // Relaciones
 Usuario.hasMany(Resena, { foreignKey: 'usuarioRut' });
@@ -50,6 +52,21 @@ Usuario.belongsToMany(Usuario, {
   otherKey: 'seguidorRut'
 });
 
+Usuario.belongsToMany(Resena, {
+  through: LikeResena,
+  as: 'ResenasLikeadas',
+  foreignKey: 'usuarioRut',
+  otherKey: 'resenaId'
+});
+
+Resena.belongsToMany(Usuario, {
+  through: LikeResena,
+  as: 'UsuariosQueDieronLike',
+  foreignKey: 'resenaId',
+  otherKey: 'usuarioRut'
+});
+
+
 
 module.exports = {
   sequelize,
@@ -58,5 +75,6 @@ module.exports = {
   Pelicula,
   Favorito,
   EstadisticaUsuario,
-  Seguidor
+  Seguidor,
+  LikeResena
 };

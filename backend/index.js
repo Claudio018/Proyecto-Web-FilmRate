@@ -13,6 +13,7 @@ const usuarioRoutes = require('./routes/usuario');
 const rutaSeguidores = require('./routes/seguidores');
 const rutaEstadisticas = require('./routes/estadisticas');
 const perfilRouter = require('./routes/perfil');
+const likesResenaRoutes = require('./routes/likeResena');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.use('/favoritos', favoritosRouter);
 app.use('/usuario', usuarioRoutes);
 app.use('/api', rutaSeguidores);
 app.use('/perfil', perfilRouter);
+app.use('/peliculas/likes', likesResenaRoutes);
 
 app.get('/', (req, res) => {
   res.send('se conecto a bd');

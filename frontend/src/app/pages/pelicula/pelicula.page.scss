@@ -134,5 +134,17 @@
       font-size: 14px;
       text-align: right;
     }
+
+    .like-container {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .like-container ion-icon.liked {
+      color: #e74c3c;
+    }
   }
 }

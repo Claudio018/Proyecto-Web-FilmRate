@@ -64,6 +64,16 @@
         <div class="fecha">
           <span>{{ r.created_at | date: 'short' }}</span>
         </div>
+
+        <!-- Botón like -->
+        <div *ngIf="isLoggedIn" class="like-container" (click)="toggleLikeResena(i)" title="{{ r.likedByUser ? 'Quitar like' : 'Dar like' }}">
+          <ion-icon
+            [name]="r.likedByUser ? 'heart' : 'heart-outline'"
+            [class.liked]="r.likedByUser"
+            style="cursor:pointer; font-size: 24px; color: red;"
+          ></ion-icon>
+          <span>{{ r.likesCount }}</span>
+        </div>
       </div>
     </div>
 
