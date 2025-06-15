@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
-@Component({ 
+@Component({
   selector: 'app-header',
   standalone: true,
   imports: [IonicModule, RouterModule, CommonModule],
@@ -14,15 +14,14 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent implements OnInit {
 
   isLoggedIn = false;
-  usuarioNombre?: string| null;
+  usuarioNombre: string | null = null;
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(){
-    this.isLoggedIn = this.authService.isLoggedIn();
-    if (this.isLoggedIn) {
-            this.usuarioNombre = this.authService.getUsuarioNombre();
-
-    }
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe((estado) => {
+      this.isLoggedIn = estado;
+      this.usuarioNombre = estado ? this.authService.getUsuarioNombre() : null;
+    });
   }
 }
