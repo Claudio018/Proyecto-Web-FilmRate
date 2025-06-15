@@ -56,4 +56,25 @@ export class UsuarioService {
     return this.http.get<Usuario>(`${this.apiUrl}/usuario/nombre/${nombre}`);
   }
 
+  seguirUsuario(seguidorRut: string, seguidoRut: string) {
+    return this.http.post(
+      `${this.apiUrl}/seguimiento/${seguidorRut}/seguir/${seguidoRut}`,
+      {},
+      { headers: this.getHeaders() }
+    );
+  }
+
+  dejarDeSeguir(seguidorRut: string, seguidoRut: string) {
+    return this.http.delete(
+      `${this.apiUrl}/seguimiento/${seguidorRut}/dejar/${seguidoRut}`,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  verificaSiLoSigue(seguidorRut: string, seguidoRut: string) {
+    return this.http.get<{ sigue: boolean }>(
+      `${this.apiUrl}/seguimiento/${seguidorRut}/seguido/${seguidoRut}`,
+      { headers: this.getHeaders() }
+    );
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { AuthService } from '../../services/auth.service';
@@ -6,6 +6,7 @@ import { TmbdService } from '../../services/tmbd.service';
 import { Usuario } from '../../models/usuario';
 import { Estadisticas } from '../../models/estadisticas';
 import { forkJoin } from 'rxjs';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil',
@@ -13,7 +14,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./perfil.page.scss'],
   standalone: false
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage {
   perfil?: Usuario;
   favoritos: any[] = [];
   stats?: Estadisticas;
@@ -23,15 +24,19 @@ export class PerfilPage implements OnInit {
   editandoDescripcion = false;
   nuevaDescripcion = '';
 
+  loSigue = false;
+  cargandoSeguimiento = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private usuarioSvc: UsuarioService,
     private auth: AuthService,
-    private tmdb: TmbdService
+    private tmdb: TmbdService,
+    private toastController: ToastController
   ) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     const nombre = this.route.snapshot.paramMap.get('nombre');
 
     if (!nombre) {
@@ -59,6 +64,29 @@ export class PerfilPage implements OnInit {
             this.cargando = false;
           }
         });
+
+        if (!this.esMiPerfil) {
+          this.cargandoSeguimiento = true;
+
+          if (!rutActual) {
+            this.loSigue = false;
+            this.cargandoSeguimiento = false;
+            return;
+          }
+
+          this.usuarioSvc.verificaSiLoSigue(rutActual, perfil.rut!).subscribe({
+            next: res => {
+              this.loSigue = res.sigue;
+              this.cargandoSeguimiento = false;
+            },
+            error: err => {
+              console.error('Error al verificar seguimiento:', err);
+              this.cargandoSeguimiento = false;
+            }
+          });
+        } else {
+          this.cargandoSeguimiento = false;
+        }
       },
       error: err => {
         console.error('Error al obtener perfil por nombre:', err);
@@ -108,5 +136,56 @@ export class PerfilPage implements OnInit {
 
   irAPelicula(peliculaId: number) {
     this.router.navigate(['/pelicula', peliculaId]);
+  }
+
+  async mostrarToastSesion() {
+    const toast = await this.toastController.create({
+      message: 'Debes iniciar sesión para seguir usuarios.',
+      duration: 2500,
+      color: 'warning',
+      position: 'bottom',
+    });
+    await toast.present();
+  }
+
+  toggleSeguir() {
+    if (!this.perfil) return;
+
+    if (!this.auth.isLoggedIn()) {
+      this.mostrarToastSesion();
+      return;
+    }
+
+    const rutActual = this.auth.getUsuarioRut();
+    if (!rutActual) {
+      this.mostrarToastSesion();
+      return;
+    }
+
+    this.cargandoSeguimiento = true;
+
+    if (this.loSigue) {
+      this.usuarioSvc.dejarDeSeguir(rutActual, this.perfil.rut!).subscribe({
+        next: () => {
+          this.loSigue = false;
+          this.cargandoSeguimiento = false;
+        },
+        error: err => {
+          console.error('Error al dejar de seguir:', err);
+          this.cargandoSeguimiento = false;
+        }
+      });
+    } else {
+      this.usuarioSvc.seguirUsuario(rutActual, this.perfil.rut!).subscribe({
+        next: () => {
+          this.loSigue = true;
+          this.cargandoSeguimiento = false;
+        },
+        error: err => {
+          console.error('Error al seguir:', err);
+          this.cargandoSeguimiento = false;
+        }
+      });
+    }
   }
 }

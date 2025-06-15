@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth');
 const resenaRoutes = require('./routes/resenas');
 const favoritosRouter = require('./routes/favoritos');
 const usuarioRoutes = require('./routes/usuario');
-const rutaSeguidores = require('./routes/seguidores');
+const rutaSeguimiento = require('./routes/seguimiento');
 const perfilRouter = require('./routes/perfil');
 const likesResenaRoutes = require('./routes/likeResena');
 
@@ -24,9 +24,10 @@ app.use('/auth', authRoutes);
 app.use('/peliculas', resenaRoutes);
 app.use('/favoritos', favoritosRouter);
 app.use('/usuario', usuarioRoutes);
-app.use('/api', rutaSeguidores);
+app.use('/seguimiento', rutaSeguimiento);
 app.use('/perfil', perfilRouter);
 app.use('/peliculas/likes', likesResenaRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('se conecto a bd');

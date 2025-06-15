@@ -13,6 +13,18 @@
         <img [src]="perfil?.fotoPerfil || 'assets/img/default-avatar.png'" alt="Foto de perfil" />
       </ion-avatar>
       <h2>{{ perfil?.nombre }}</h2>
+
+      <!-- BOTÓN SEGUIR / DEJAR DE SEGUIR -->
+      <div *ngIf="!esMiPerfil">
+        <ion-button
+          [disabled]="cargandoSeguimiento"
+          (click)="toggleSeguir()"
+          size="small"
+          color="{{ loSigue ? 'danger' : 'primary' }}"
+        >
+          {{ loSigue ? 'Dejar de seguir' : 'Seguir' }}
+        </ion-button>
+      </div>
     </div>
     <div class="descripcion">
       <ng-container *ngIf="editandoDescripcion; else verDescripcion">

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Usuario } = require('../models');
+const { Usuario, Seguidor } = require('../models');
 const authenticateToken = require('../middleware/authenticateToken');
 
 router.get('/me', authenticateToken, async (req, res) => {
