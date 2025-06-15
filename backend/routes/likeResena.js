@@ -41,7 +41,7 @@ router.delete('/:resenaId', authenticateToken, async (req, res) => {
   }
 });
 
-// GET info likes
+// GET info likes (requiere autenticación)
 router.get('/:resenaId', authenticateToken, async (req, res) => {
   const usuarioRut = req.user.rut;
   const { resenaId } = req.params;
@@ -53,6 +53,19 @@ router.get('/:resenaId', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener info de likes' });
+  }
+});
+
+// GET público para contar likes sin autenticación
+router.get('/public/:resenaId', async (req, res) => {
+  const { resenaId } = req.params;
+
+  try {
+    const likesCount = await LikeResena.count({ where: { resenaId } });
+    res.json({ likesCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener el conteo de likes' });
   }
 });
 

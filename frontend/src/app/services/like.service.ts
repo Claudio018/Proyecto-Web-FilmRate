@@ -26,9 +26,15 @@ export class LikeService {
     return this.http.delete(`${this.baseUrl}/${resenaId}`, { headers });
   }
 
-  getLikesInfo(resenaId: number): Observable<{ liked: boolean; likesCount: number }> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<{ liked: boolean; likesCount: number }>(`${this.baseUrl}/${resenaId}`, { headers });
+  getLikesInfo(resenaId: number): Observable<{ liked?: boolean; likesCount: number }> {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<{ liked: boolean; likesCount: number }>(`${this.baseUrl}/${resenaId}`, { headers });
+    } else {
+      // Llamada pública sin headers
+      return this.http.get<{ likesCount: number }>(`${this.baseUrl}/public/${resenaId}`);
+    }
   }
 
 }

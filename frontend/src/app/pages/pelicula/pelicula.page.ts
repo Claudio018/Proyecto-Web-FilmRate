@@ -5,7 +5,7 @@ import { ResenaService } from '../../services/resena.service';
 import { AuthService } from '../../services/auth.service';
 import { FavoritoService } from '../../services/favorito.service';
 import { LikeService } from '../../services/like.service';
-import { ViewWillEnter } from '@ionic/angular';
+import { ViewWillEnter, ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pelicula',
@@ -31,7 +31,9 @@ export class PeliculaPage implements ViewWillEnter {
     private router: Router,
     private authService: AuthService,
     private favoritoService: FavoritoService,
-    private likeService: LikeService
+    private likeService: LikeService,
+    private toastController: ToastController,
+    private alertCtrl: AlertController
   ) {}
 
   ionViewWillEnter() {
@@ -43,7 +45,25 @@ export class PeliculaPage implements ViewWillEnter {
       this.checkFavorito();
     }
 
-    this.loadResenasConLikes();
+    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
+      this.resenas = data.map((r: any) => ({
+        id: r.resenaId,
+        ...r,
+        expandido: false,
+        likesCount: 0,
+        likedByUser: false
+      }));
+
+      this.resenas.forEach((resena, index) => {
+        this.likeService.getLikesInfo(resena.id).subscribe(likeInfo => {
+          this.resenas[index].likesCount = likeInfo.likesCount;
+          this.resenas[index].likedByUser = this.isLoggedIn && likeInfo.liked ? true : false;
+        }, err => {
+          this.resenas[index].likesCount = 0;
+          this.resenas[index].likedByUser = false;
+        });
+      });
+    });
   }
 
   loadMovie() {
@@ -66,44 +86,18 @@ export class PeliculaPage implements ViewWillEnter {
     });
   }
 
-  checkFavorito() {
-    this.favoritoService.estaFavorito(this.peliculaId).subscribe((resp: any) => {
-      this.esFavorito = resp.esFavorito;
-    });
-  }
-
-  loadResenasConLikes() {
-    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
-      this.resenas = data.map((r: any) => ({
-        id: r.resenaId,
-        ...r,
-        expandido: false,
-        likesCount: 0,
-        likedByUser: false,
-        likesLoaded: false // flag para controlar carga
-      }));
-
-      if (this.isLoggedIn) {
-        this.resenas.forEach((resena, index) => {
-          this.likeService.getLikesInfo(resena.id).subscribe(likeInfo => {
-            this.resenas[index].likesCount = likeInfo.likesCount;
-            this.resenas[index].likedByUser = likeInfo.liked;
-            this.resenas[index].likesLoaded = true;
-          }, err => {
-            // En caso de error, igual marcamos como cargado para no bloquear render
-            this.resenas[index].likesLoaded = true;
-          });
-        });
-      }
-    });
-  }
-
   toggleBanner() {
     this.bannerExpandido = !this.bannerExpandido;
   }
 
   irCrearResena() {
     this.router.navigate(['/crear-resena', this.peliculaId]);
+  }
+
+  checkFavorito() {
+    this.favoritoService.estaFavorito(this.peliculaId).subscribe((resp: any) => {
+      this.esFavorito = resp.esFavorito;
+    });
   }
 
   toggleFavorito() {
@@ -118,26 +112,36 @@ export class PeliculaPage implements ViewWillEnter {
     this.resenas[index].expandido = !this.resenas[index].expandido;
   }
 
+  onClickLike(index: number) {
+    if (!this.isLoggedIn) {
+      this.mostrarToastSesion();
+      return;
+    }
+    this.toggleLikeResena(index);
+  }
+
+  async mostrarToastSesion() {
+    const toast = await this.toastController.create({
+      message: 'Debes iniciar sesión para dar like.',
+      duration: 2500,
+      color: 'warning',
+      position: 'bottom',
+    });
+    await toast.present();
+  }
+
   toggleLikeResena(index: number) {
-    if (!this.isLoggedIn) return;
-
     const resena = this.resenas[index];
-
-    const refrescarLikes = () => {
-      this.likeService.getLikesInfo(resena.id).subscribe(likeInfo => {
-        this.resenas[index].likesCount = likeInfo.likesCount;
-        this.resenas[index].likedByUser = likeInfo.liked;
-        this.resenas[index].likesLoaded = true;
-      });
-    };
 
     if (resena.likedByUser) {
       this.likeService.quitarLike(resena.id).subscribe(() => {
-        refrescarLikes();
+        resena.likesCount--;
+        resena.likedByUser = false;
       });
     } else {
       this.likeService.darLike(resena.id).subscribe(() => {
-        refrescarLikes();
+        resena.likesCount++;
+        resena.likedByUser = true;
       });
     }
   }

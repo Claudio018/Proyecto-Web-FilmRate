@@ -65,12 +65,15 @@
           <span>{{ r.created_at | date: 'short' }}</span>
         </div>
 
-        <!-- Botón like sólo si la info de likes ya cargó -->
-        <div *ngIf="isLoggedIn && r.likesLoaded" class="like-container" (click)="toggleLikeResena(i)" title="{{ r.likedByUser ? 'Quitar like' : 'Dar like' }}">
+        <!-- Botón like siempre visible -->
+        <div class="like-container" 
+             (click)="onClickLike(i)" 
+             title="{{ r.likedByUser ? 'Quitar like' : 'Dar like' }}"
+             style="cursor: pointer;">
           <ion-icon
             [name]="r.likedByUser ? 'heart' : 'heart-outline'"
             [class.liked]="r.likedByUser"
-            style="cursor:pointer; font-size: 24px; color: red;"
+            style="font-size: 24px; color: red;"
           ></ion-icon>
           <span>{{ r.likesCount }}</span>
         </div>

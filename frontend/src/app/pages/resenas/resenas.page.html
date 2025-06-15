@@ -28,7 +28,7 @@
           </div>
 
           <span class="usuario">
-            Usuario: 
+            Usuario:
             <ion-button fill="clear" size="small" (click)="irAlPerfil(resena.usuario?.username)">
               {{ resena.usuario?.username }}
             </ion-button>
@@ -46,6 +46,15 @@
         <div class="fechas">
           <span>Creado: {{ resena.created_at | date:'short' }}</span>
           <span>Modificado: {{ resena.updated_at | date:'short' }}</span>
+        </div>
+
+        <div class="like-container">
+          <ion-icon
+            [name]="resena.likedByUser ? 'heart' : 'heart-outline'"
+            class="like-icon"
+            (click)="onClickLike(i)">
+          </ion-icon>
+          <span class="likes-count">{{ resena.likesCount }}</span>
         </div>
       </div>
     </div>
