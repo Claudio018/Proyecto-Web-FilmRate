@@ -6,7 +6,6 @@ import { AuthService } from '../../services/auth.service';
 import { FavoritoService } from '../../services/favorito.service';
 import { LikeService } from '../../services/like.service';
 import { ViewWillEnter } from '@ionic/angular';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-pelicula',
@@ -44,30 +43,7 @@ export class PeliculaPage implements ViewWillEnter {
       this.checkFavorito();
     }
 
-    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
-      this.resenas = data.map((r: any) => ({
-        id: r.resenaId,
-        ...r,
-        expandido: false,
-        likesCount: 0,
-        likedByUser: false
-      }));
-
-      if (this.isLoggedIn && this.resenas.length > 0) {
-        // Creamos un arreglo de observables para pedir info de likes de cada reseña
-        const likesObservables = this.resenas.map(resena => 
-          this.likeService.getLikesInfo(resena.id)
-        );
-
-        // forkJoin espera que todos respondan antes de continuar
-        forkJoin(likesObservables).subscribe(likesResults => {
-          likesResults.forEach((likeInfo, index) => {
-            this.resenas[index].likesCount = likeInfo.likesCount;
-            this.resenas[index].likedByUser = likeInfo.liked;
-          });
-        });
-      }
-    });
+    this.loadResenasConLikes();
   }
 
   loadMovie() {
@@ -90,18 +66,44 @@ export class PeliculaPage implements ViewWillEnter {
     });
   }
 
+  checkFavorito() {
+    this.favoritoService.estaFavorito(this.peliculaId).subscribe((resp: any) => {
+      this.esFavorito = resp.esFavorito;
+    });
+  }
+
+  loadResenasConLikes() {
+    this.resenaService.getResenasByPelicula(this.peliculaId).subscribe(data => {
+      this.resenas = data.map((r: any) => ({
+        id: r.resenaId,
+        ...r,
+        expandido: false,
+        likesCount: 0,
+        likedByUser: false,
+        likesLoaded: false // flag para controlar carga
+      }));
+
+      if (this.isLoggedIn) {
+        this.resenas.forEach((resena, index) => {
+          this.likeService.getLikesInfo(resena.id).subscribe(likeInfo => {
+            this.resenas[index].likesCount = likeInfo.likesCount;
+            this.resenas[index].likedByUser = likeInfo.liked;
+            this.resenas[index].likesLoaded = true;
+          }, err => {
+            // En caso de error, igual marcamos como cargado para no bloquear render
+            this.resenas[index].likesLoaded = true;
+          });
+        });
+      }
+    });
+  }
+
   toggleBanner() {
     this.bannerExpandido = !this.bannerExpandido;
   }
 
   irCrearResena() {
     this.router.navigate(['/crear-resena', this.peliculaId]);
-  }
-
-  checkFavorito() {
-    this.favoritoService.estaFavorito(this.peliculaId).subscribe((resp: any) => {
-      this.esFavorito = resp.esFavorito;
-    });
   }
 
   toggleFavorito() {
@@ -121,15 +123,21 @@ export class PeliculaPage implements ViewWillEnter {
 
     const resena = this.resenas[index];
 
+    const refrescarLikes = () => {
+      this.likeService.getLikesInfo(resena.id).subscribe(likeInfo => {
+        this.resenas[index].likesCount = likeInfo.likesCount;
+        this.resenas[index].likedByUser = likeInfo.liked;
+        this.resenas[index].likesLoaded = true;
+      });
+    };
+
     if (resena.likedByUser) {
       this.likeService.quitarLike(resena.id).subscribe(() => {
-        resena.likesCount--;
-        resena.likedByUser = false;
+        refrescarLikes();
       });
     } else {
       this.likeService.darLike(resena.id).subscribe(() => {
-        resena.likesCount++;
-        resena.likedByUser = true;
+        refrescarLikes();
       });
     }
   }
