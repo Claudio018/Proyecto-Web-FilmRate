@@ -11,7 +11,6 @@ const resenaRoutes = require('./routes/resenas');
 const favoritosRouter = require('./routes/favoritos');
 const usuarioRoutes = require('./routes/usuario');
 const rutaSeguidores = require('./routes/seguidores');
-const rutaEstadisticas = require('./routes/estadisticas');
 const perfilRouter = require('./routes/perfil');
 const likesResenaRoutes = require('./routes/likeResena');
 

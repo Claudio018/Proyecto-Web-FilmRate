@@ -49,7 +49,9 @@
     <div class="resenas" *ngIf="resenas.length > 0; else noResenas">
       <div *ngFor="let r of resenas; let i = index" class="resena">
         <div class="resena-meta">
-          <span class="usuario">Usuario: {{ r.usuario }}</span>
+          <span class="usuario" (click)="irPerfil(r.usuario)" style="color: var(--ion-color-primary); cursor: pointer;">
+            Usuario: {{ r.usuario }}
+          </span>
           <div class="estrellas">
             <ion-icon
               *ngFor="let star of [1,2,3,4,5]"

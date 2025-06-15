@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Usuario, EstadisticaUsuario } = require('../models');
+const { Usuario } = require('../models');
 const { UniqueConstraintError } = require('sequelize');
 
 
@@ -35,7 +35,6 @@ router.post('/register', async (req, res) => {
       contrasena: hashedPassword
     });
     
-    await EstadisticaUsuario.create({ usuarioRut: nuevoUsuario.rut });
 
 
     console.log('Usuario creado:', nuevoUsuario);

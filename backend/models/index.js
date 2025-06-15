@@ -21,7 +21,6 @@ const Usuario = require('./usuario')(sequelize);
 const Resena = require('./resena')(sequelize);
 const Pelicula = require('./pelicula')(sequelize);
 const Favorito = require('./favorito')(sequelize);
-const EstadisticaUsuario = require('./estadisticaUsuario')(sequelize);
 const Seguidor = require('./seguidores')(sequelize);
 const LikeResena = require('./likeResena')(sequelize);
 
@@ -36,8 +35,7 @@ Resena.belongsTo(Pelicula, { foreignKey: 'peliculaId' });
 Usuario.belongsToMany(Pelicula, { through: Favorito, foreignKey: 'usuarioRut', otherKey: 'peliculaId' });
 Pelicula.belongsToMany(Usuario, { through: Favorito, foreignKey: 'peliculaId', otherKey: 'usuarioRut' });
 
-Usuario.hasOne(EstadisticaUsuario, { foreignKey: 'usuarioRut' });
-EstadisticaUsuario.belongsTo(Usuario, { foreignKey: 'usuarioRut' });
+
 
 Usuario.belongsToMany(Usuario, {
   through: Seguidor,
@@ -74,7 +72,6 @@ module.exports = {
   Resena,
   Pelicula,
   Favorito,
-  EstadisticaUsuario,
   Seguidor,
   LikeResena
 };

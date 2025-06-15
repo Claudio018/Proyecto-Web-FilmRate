@@ -1,6 +1,6 @@
 export interface Estadisticas {
   cantidadFavoritos: number;
-  cantidadComentarios: number;
+  cantidadLikesDado: number; 
   cantidadSeguidores: number;
   cantidadSiguiendo: number;
   cantidadResenas: number;

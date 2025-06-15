@@ -145,4 +145,8 @@ export class PeliculaPage implements ViewWillEnter {
       });
     }
   }
+
+  irPerfil(nombreUsuario: string) {
+    this.router.navigate(['/perfil', nombreUsuario]);
+  }
 }
