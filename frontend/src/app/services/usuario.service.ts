@@ -100,4 +100,9 @@ export class UsuarioService {
       { headers: this.getHeaders() }
     );
   }
+  getTodosLosUsuarios() {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/usuario`, {
+      headers: this.getHeaders()
+    });
+  } 
 }

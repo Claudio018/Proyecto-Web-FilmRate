@@ -35,12 +35,18 @@ export class InicioSesionPage implements OnInit {
     this.authService.login({ nombre: this.username, contrasena: this.password }).subscribe({
       next: (res) => {
         this.mensajeColor = 'success';
-        this.mensaje = 'Inicio sesion exitoso';
-        setTimeout(() => {this.router.navigate(['/home']);}, 5000);
+        this.mensaje = 'Inicio de sesión exitoso';
+        // Redirigir rápido para mejor UX
+        setTimeout(() => { this.router.navigate(['/home']); }, 1500);
       },
       error: (err) => {
         this.mensajeColor = 'danger';
-        this.mensaje = (err.error.error);
+        // Mostrar el mensaje de error enviado desde backend (incluye bloqueo si aplica)
+        if (err.error && err.error.error) {
+          this.mensaje = err.error.error;
+        } else {
+          this.mensaje = 'Error desconocido al iniciar sesión';
+        }
       }
     });
   }

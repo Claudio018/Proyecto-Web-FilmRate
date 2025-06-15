@@ -46,6 +46,15 @@ module.exports = (sequelize) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
+    },
+    intentosFallidos: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    bloqueadoHasta: {
+      type: DataTypes.DATE,
+      allowNull: true,
     }
   }, {
     tableName: 'Usuarios',

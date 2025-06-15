@@ -2,11 +2,29 @@
   <div class="contenido-home">
     <h1>Página principal</h1>
 
-    <div *ngIf="authService.isLoggedIn(); else loginTemplate">
+    <div *ngIf="authService.isLoggedIn(); else loginTemplate" class="usuario-logged">
       <p *ngIf="usuarioNombre">
         Bienvenido {{ usuarioNombre }}, qué gusto verte de nuevo
       </p>
       <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+
+      <!-- Formulario exclusivo para moderadores dentro del mismo contenedor -->
+      <div *ngIf="esModerador && usuarios.length > 0" class="formulario-moderador">
+        <h3>Ver perfil de usuario</h3>
+
+        <ion-item>
+          <ion-label>Selecciona un usuario</ion-label>
+          <ion-select [(ngModel)]="usuarioSeleccionadoNombre" placeholder="Elige un usuario">
+            <ion-select-option *ngFor="let user of usuarios" [value]="user.nombre">
+              {{ user.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="block" [disabled]="!usuarioSeleccionadoNombre" (click)="irAlPerfil()">
+          Ir al perfil
+        </ion-button>
+      </div>
     </div>
 
     <ng-template #loginTemplate>

@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { Usuario } = require('../models');
 const { UniqueConstraintError } = require('sequelize');
 
-
 const router = express.Router();
 
 //post para registrarse
@@ -32,10 +31,10 @@ router.post('/register', async (req, res) => {
       correo,
       region,
       comuna,
-      contrasena: hashedPassword
+      contrasena: hashedPassword,
+      intentosFallidos: 0,      // Inicializar contador
+      bloqueadoHasta: null      // Inicializar bloqueo
     });
-    
-
 
     console.log('Usuario creado:', nuevoUsuario);
 
@@ -68,6 +67,9 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Nombre y contraseña son requeridos para login' });
   }
 
+  const MAX_INTENTOS = 5;
+  const BLOQUEO_MINUTOS = 15;
+
   try {
     // Buscar usuario por nombre 
     const usuario = await Usuario.findOne({ where: { nombre } });
@@ -77,15 +79,37 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
+    // Verificar bloqueo
+    if (usuario.bloqueadoHasta && new Date() < usuario.bloqueadoHasta) {
+      const minutosRestantes = Math.ceil((usuario.bloqueadoHasta - new Date()) / 60000);
+      return res.status(403).json({ error: `Cuenta bloqueada. Intenta de nuevo en ${minutosRestantes} minutos.` });
+    }
+
     const validPassword = await bcrypt.compare(contrasena, usuario.contrasena);
 
     if (!validPassword) {
-      console.log('Contraseña incorrecta para usuario:', nombre);
-      return res.status(401).json({ error: 'Contraseña incorrecta' });
+      usuario.intentosFallidos = (usuario.intentosFallidos || 0) + 1;
+
+      if (usuario.intentosFallidos >= MAX_INTENTOS) {
+        usuario.bloqueadoHasta = new Date(Date.now() + BLOQUEO_MINUTOS * 60 * 1000);
+        usuario.intentosFallidos = 0; // resetear contador
+        await usuario.save();
+        return res.status(403).json({ error: `Has excedido los intentos. Tu cuenta está bloqueada por ${BLOQUEO_MINUTOS} minutos.` });
+      } else {
+        await usuario.save();
+        return res.status(401).json({ error: 'Contraseña incorrecta' });
+      }
     }
+
     if (usuario.suspendido) {
       return res.status(403).json({ error: 'Tu cuenta está suspendida' });
     }
+
+    // Login exitoso: resetear intentos y bloqueo
+    usuario.intentosFallidos = 0;
+    usuario.bloqueadoHasta = null;
+    await usuario.save();
+
     // Generar token con id y nombre
     const token = jwt.sign(
       { id: usuario.id, nombre: usuario.nombre, rut: usuario.rut, esModerador: usuario.esModerador  },
