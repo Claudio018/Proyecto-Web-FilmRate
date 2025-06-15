@@ -18,6 +18,11 @@ export class PerfilPage implements OnInit {
   stats?: Estadisticas;
   cargando = true;
 
+  // Nuevas propiedades
+  esMiPerfil = false;
+  editandoDescripcion = false;
+  nuevaDescripcion = '';
+
   constructor(
     private usuarioSvc: UsuarioService,
     private auth: AuthService,
@@ -30,14 +35,22 @@ export class PerfilPage implements OnInit {
 
     // 1) Perfil
     this.usuarioSvc.getPerfil(rut).subscribe({
-      next: perfil => this.perfil = perfil,
+      next: perfil => {
+        this.perfil = perfil;
+        this.nuevaDescripcion = perfil.descripcion || '';
+
+        const rutActual = this.auth.getUsuarioRut();
+        console.log('rut actual:', rutActual);
+        console.log('rut perfil:', perfil.rut);
+        this.esMiPerfil = rutActual === perfil.rut;
+        console.log('esMiPerfil:', this.esMiPerfil);
+      },
       error: err => console.error('Error al cargar perfil:', err)
     });
 
-    // 2) Favoritos (ahora obtenemos un array de objetos con peliculaId)
+    // 2) Favoritos
     this.usuarioSvc.getFavoritosIds(rut).subscribe({
       next: records => {
-        // Extraemos los IDs numéricos
         const ids = records.map(r => r.peliculaId);
 
         if (!ids.length) {
@@ -45,7 +58,6 @@ export class PerfilPage implements OnInit {
           return;
         }
 
-        // Pedimos detalles de cada película
         const peticiones = ids.map(id => this.tmdb.getMovieDetail(id));
         forkJoin(peticiones).subscribe({
           next: pelis => this.favoritos = pelis,
@@ -67,4 +79,25 @@ export class PerfilPage implements OnInit {
       }
     });
   }
+
+  editarDescripcion() {
+    this.nuevaDescripcion = this.perfil?.descripcion || '';
+    this.editandoDescripcion = true;
+  }
+
+  guardarDescripcion() {
+    if (!this.perfil) return;
+
+    this.usuarioSvc.actualizarDescripcion(this.perfil.rut!, this.nuevaDescripcion).subscribe({
+      next: () => {
+        this.perfil!.descripcion = this.nuevaDescripcion;
+        this.editandoDescripcion = false;
+      },
+      error: err => {
+        console.error('Error al actualizar descripción:', err);
+        // Aquí puedes mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
 }

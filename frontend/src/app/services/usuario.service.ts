@@ -43,4 +43,14 @@ export class UsuarioService {
       { headers: this.getHeaders() }
     );
   }
+
+  actualizarDescripcion(rut: string, descripcion: string): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/perfil/${rut}`,
+      { descripcion },
+      { headers: this.getHeaders() }
+    );
+  }
+
+
 }

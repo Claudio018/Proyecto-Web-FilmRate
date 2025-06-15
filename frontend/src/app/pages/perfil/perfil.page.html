@@ -8,12 +8,29 @@
 
   <!-- PERFIL -->
   <section class="card perfil-card">
-    <ion-avatar slot="start">
-      <img [src]="perfil?.foto_url || 'assets/img/default-avatar.png'" />
-    </ion-avatar>
-    <div class="info">
-      <h2>{{ perfil?.nombre_usuario }}</h2>
-      <p>{{ perfil?.descripcion }}</p>
+    <div class="foto-nombre">
+      <ion-avatar>
+        <img [src]="perfil?.fotoPerfil || 'assets/img/default-avatar.png'" alt="Foto de perfil" />
+      </ion-avatar>
+      <h2>{{ perfil?.nombre }}</h2>
+    </div>
+    <div class="descripcion">
+      <ng-container *ngIf="editandoDescripcion; else verDescripcion">
+        <ion-textarea
+          [(ngModel)]="nuevaDescripcion"
+          auto-grow
+          placeholder="Escribe tu descripción..."
+        ></ion-textarea>
+        <ion-button size="small" (click)="guardarDescripcion()">Guardar</ion-button>
+        <ion-button size="small" color="medium" (click)="editandoDescripcion = false">Cancelar</ion-button>
+      </ng-container>
+
+      <ng-template #verDescripcion>
+        <p>{{ perfil?.descripcion }}</p>
+        <ion-button *ngIf="esMiPerfil" size="small" (click)="editarDescripcion()">
+          Editar descripción
+        </ion-button>
+      </ng-template>
     </div>
   </section>
 
@@ -37,23 +54,23 @@
   <!-- ESTADÍSTICAS -->
   <section class="card stats-card" *ngIf="stats">
     <div class="stat">
-      <span class="numero">{{ stats.favoritos }}</span>
+      <span class="numero">{{ stats.cantidadFavoritos }}</span>
       <span class="label">Favoritos</span>
     </div>
     <div class="stat">
-      <span class="numero">{{ stats.comentarios }}</span>
+      <span class="numero">{{ stats.cantidadComentarios }}</span>
       <span class="label">Comentarios</span>
     </div>
     <div class="stat">
-      <span class="numero">{{ stats.seguidores }}</span>
+      <span class="numero">{{ stats.cantidadSeguidores }}</span>
       <span class="label">Seguidores</span>
     </div>
     <div class="stat">
-      <span class="numero">{{ stats.siguiendo }}</span>
+      <span class="numero">{{ stats.cantidadSiguiendo }}</span>
       <span class="label">Siguiendo</span>
     </div>
     <div class="stat">
-      <span class="numero">{{ stats.resenas }}</span>
+      <span class="numero">{{ stats.cantidadResenas }}</span>
       <span class="label">Reseñas</span>
     </div>
   </section>

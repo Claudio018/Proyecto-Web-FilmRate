@@ -1,11 +1,11 @@
 export interface Usuario {
-  nombre_usuario: string;
+  nombre: string;
   rut: string;
   correo: string;
   region: string;
   comuna: string;
   contrasena: string;
 
-  foto_url: string;       
+  fotoPerfil: string | null;    
   descripcion: string;
 }
