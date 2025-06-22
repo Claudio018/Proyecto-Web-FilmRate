@@ -1,29 +1,36 @@
 .contenido-home {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra horizontalmente */
-  justify-content: flex-start; /* lo coloca arriba */
+  align-items: center; // Centra horizontalmente
+  justify-content: flex-start; // Lo coloca arriba
   height: 100%;
-  padding-top: 60px; /* espacio desde el header */
+  padding-top: 60px; // Espacio desde el header
   text-align: center;
-  gap: 12px; /* espacio entre elementos hijos para que no queden pegados */
+  gap: 12px; // Espacio entre elementos hijos
+
+  // Opcional: asegurar que el texto use el color correcto
+  color: var(--ion-text-color);
+  background: var(--ion-background-color);
 }
 
 .usuario-logged {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px; /* espacio entre texto, botón y formulario */
+  gap: 8px; // Espacio entre texto, botón y formulario
   width: 100%;
-  max-width: 400px; /* límite de ancho para que no quede muy ancho */
+  max-width: 400px; // Límite de ancho
+  color: var(--ion-text-color); // Texto adaptable al modo
 }
 
 .formulario-moderador {
   width: 100%;
   text-align: left;
+  color: var(--ion-text-color); // Se asegura que todo dentro tenga buen contraste
 
   h3 {
     margin-bottom: 8px;
+    color: var(--ion-text-color);
   }
 
   ion-item {

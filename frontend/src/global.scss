@@ -28,26 +28,88 @@
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
+ * Uses system preference to switch automatically between light and dark.
  */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+/* ===========================================================
+   CUSTOM GLOBAL VARIABLES FOR LIGHT/DARK MODE SUPPORT
+   =========================================================== */
 
-/*body {
-    background-color: var(--ion-color-background) !important;
-    color: white;
-  }
-
-@media (prefers-color-scheme: dark) {
-    html, body, ion-app {
-      background-color: var(--ion-color-background) !important;
-      color: white;
-    }
-  }*/
-
-
+/* Modo claro por defecto */
+:root {
+  --image-container-bg: #f6d596;
+  --image-container-text-color: #333;
+  --resena-card-bg: #f4f4f4;
+  --perfil-card-bg: #ffffff;
+  --perfil-avatar-border-color: #333;
+  --search-border-color: #ccc;
+  --card-bg: #ffffff;
+  --resena-bg: #f9f9f9;
+  --resena-meta-color: #666;
+  --resena-fecha-color: #999;
+  --ion-text-color: #000000;
+  --ion-background-color: #ffffff;
+  --ion-color-medium: #666666; 
+  --resena-card-bg: #f4f4f4;
+  --login-bg: #ffffff;
+  --login-text: #000000;
+  --login-input-bg: #f0f0f0;
+  --login-highlight: #000000;
+  --login-button-bg: #dddddd;
+  --login-link-color: #007bff;
+  --login-success: #4caf50;
+  --login-danger: #f44336;
   
+  
+}
+
+/* Modo oscuro (cuando body.dark está presente) */
+body.dark {
+  --image-container-bg: #2a2a2a;
+  --image-container-text-color: #f6f6f6;
+  --resena-card-bg: #2a2a2a;
+  --perfil-card-bg: #1e1e1e;
+  --perfil-avatar-border-color: #fff;
+  --search-border-color: #444;
+  --card-bg: #1c1c1c;
+  --resena-bg: #2a2a2a;
+  --resena-meta-color: #aaa;
+  --resena-fecha-color: #888;
+  --ion-text-color: #ffffff;
+  --ion-background-color: #121212;
+  --ion-color-medium: #aaaaaa;
+  --login-bg: #121920;
+  --login-text: #ffffff;
+  --login-input-bg: #1e2a34;
+  --login-highlight: #ffffff;
+  --login-button-bg: #121212;
+  --login-link-color: #38a1f3;
+  --login-success: #4caf50;
+  --login-danger: #f44336;
+  
+}
+
+/* ===========================================================
+   Global overrides (opcionales)
+   =========================================================== */
+
+/* Puedes forzar el fondo global así si lo necesitas */
+ion-content {
+  --background: var(--ion-background-color);
+}
+
+/* También puedes agregar estilos de texto globales */
+body,
+ion-label,
+ion-input,
+ion-text,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--ion-text-color);
+}

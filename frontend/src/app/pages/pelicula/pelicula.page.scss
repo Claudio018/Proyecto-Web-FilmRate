@@ -1,6 +1,6 @@
 .container {
   padding: 1rem;
-  color: #fff;
+  color: var(--ion-text-color);
 }
 
 .icono-favorito {
@@ -72,12 +72,13 @@
 
   h2 {
     margin: 0;
+    color: var(--ion-text-color);
   }
 }
 
 .resenas {
   .resena {
-    background-color: #2a2a2a;
+    background-color: var(--resena-bg);
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 10px;
@@ -89,7 +90,7 @@
 
       .usuario {
         font-style: italic;
-        color: #aaa;
+        color: var(--resena-meta-color);
       }
 
       .estrellas {
@@ -97,7 +98,7 @@
 
         ion-icon {
           margin-right: 0.25rem;
-          color: #555;
+          color: var(--ion-color-step-400);
 
           &.filled {
             color: #ffd700;
@@ -108,7 +109,7 @@
 
     .comentario {
       font-size: 16px;
-      color: #ddd;
+      color: var(--ion-text-color);
       margin-top: 8px;
       cursor: pointer;
 
@@ -130,7 +131,7 @@
 
     .fecha {
       margin-top: 8px;
-      color: #888;
+      color: var(--resena-fecha-color);
       font-size: 14px;
       text-align: right;
     }
@@ -141,10 +142,10 @@
       align-items: center;
       gap: 6px;
       user-select: none;
-    }
 
-    .like-container ion-icon.liked {
-      color: #e74c3c;
+      ion-icon.liked {
+        color: #e74c3c;
+      }
     }
   }
 }

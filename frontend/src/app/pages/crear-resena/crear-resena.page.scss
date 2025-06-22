@@ -1,16 +1,15 @@
 ion-content.resena-page {
-  --background: #1e1e1e;
-  color: #ffffff;
+  --background: var(--ion-background-color);
+  color: var(--ion-text-color);
   padding: 1rem;
 
-  /* Estilos de la barra de búsqueda */
   .search-bar {
     display: flex;
     align-items: center;
     width: 100%;
     max-width: 400px;
     margin-bottom: 1rem;
-    background: #2a2a2a;
+    background: var(--resena-card-bg);
     border-radius: 4px;
     overflow: hidden;
 
@@ -19,7 +18,7 @@ ion-content.resena-page {
       border: none;
       background: transparent;
       padding: 0.5rem 1rem;
-      color: #fff;
+      color: var(--ion-text-color);
       font-size: 1rem;
       outline: none;
     }
@@ -40,7 +39,6 @@ ion-content.resena-page {
     }
   }
 
-  /* Centrar texto dentro de la tarjeta de login */
   ion-card-content {
     text-align: center;
   }
@@ -58,7 +56,7 @@ ion-content.resena-page {
 
       span {
         margin-left: 0.5rem;
-        color: #bbbbbb;
+        color: var(--resena-meta-color);
       }
     }
 
@@ -76,7 +74,7 @@ ion-content.resena-page {
         }
 
         &:not(.filled) {
-          color: #555;
+          color: #999;
         }
       }
     }
@@ -102,7 +100,8 @@ ion-content.resena-page {
 
     p {
       font-size: 1.2rem;
-      color: #eeeeee;
+      color: var(--ion-text-color);
+      opacity: 0.85;
     }
   }
 }

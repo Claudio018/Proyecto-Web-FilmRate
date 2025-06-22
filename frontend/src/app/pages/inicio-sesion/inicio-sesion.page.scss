@@ -1,5 +1,5 @@
 .login-page {
-  --background: #121920;
+  --background: var(--login-bg);
 
   .login-container {
     display: flex;
@@ -7,7 +7,7 @@
     justify-content: center;
     height: 100%;
     padding: 20px;
-    color: white;
+    color: var(--login-text);
   }
 
   .logo-section {
@@ -22,33 +22,34 @@
     h2 {
       font-weight: bold;
       font-size: 22px;
-      color: white;
+      color: var(--login-text);
     }
   }
 
   ion-item {
     margin-bottom: 20px;
-    background: #1e2a34;
+    background: var(--login-input-bg);
     border-radius: 8px;
-    --highlight-color-focused: #fff;
-    --color: white;
+    --highlight-color-focused: var(--login-highlight);
+    --color: var(--login-text);
   }
 
   ion-label {
-    color: white;
+    color: var(--login-text);
   }
 
   .login-button {
-    background-color: #121212;
+    background-color: var(--login-button-bg);
+    color: var(--login-text);
   }
 
   .register-link {
     text-align: center;
     margin-top: 20px;
-    color: white;
+    color: var(--login-text);
 
     a {
-      color: #38a1f3;
+      color: var(--login-link-color);
       text-decoration: none;
       font-weight: bold;
     }
@@ -62,10 +63,10 @@
   }
 
   .success {
-    color: #4caf50;  
+    color: var(--login-success);
   }
 
   .danger {
-    color: #f44336;  
+    color: var(--login-danger);
   }
 }

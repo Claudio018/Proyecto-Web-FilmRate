@@ -1,9 +1,8 @@
 ion-content.favoritos-page {
-  --background: #1e1e1e;
-  color: #ffffff;
+  --background: var(--ion-background-color);
+  color: var(--ion-text-color);
   padding: 1rem;
 
-  /* Centrar texto dentro de la tarjeta de login */
   ion-card-content {
     text-align: center;
   }
@@ -13,15 +12,15 @@ ion-content.favoritos-page {
     width: 1200px;
     height: 200px;
     margin: 10px auto;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     border-radius: 8px;
     cursor: pointer;
     overflow: hidden;
-    background-color: #2a2a2a;
+    background-color: var(--resena-card-bg);
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #3a3a3a;
+      background-color: color-mix(in srgb, var(--resena-card-bg), #000 10%);
     }
 
     .caratula {
@@ -52,23 +51,27 @@ ion-content.favoritos-page {
           overflow: hidden;
           text-overflow: ellipsis;
           max-width: 500px;
+          color: var(--ion-text-color);
         }
 
-        .anio, .duracion, .categoria {
+        .anio,
+        .duracion,
+        .categoria {
           font-size: 14px;
-          color: #bbb;
+          color: var(--resena-meta-color);
           white-space: nowrap;
         }
       }
 
       .sinopsis {
         font-size: 16px;
-        color: #ddd;
+        color: var(--ion-text-color);
+        opacity: 0.9;
         margin-top: 8px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
-        -webkit-line-clamp: 3; /* limita a 3 líneas */
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
       }
     }
