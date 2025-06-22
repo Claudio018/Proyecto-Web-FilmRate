@@ -18,7 +18,13 @@ const moderadorRoutes = require('./routes/moderador');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:8100', // solo acepta peticiones desde frontend
+  credentials: true,               
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use('/auth', authRoutes);
