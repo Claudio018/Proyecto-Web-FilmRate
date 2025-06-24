@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LikeService {
-  // baseUrl apunta a /peliculas para coincidir con backend
   baseUrl = 'http://localhost:3000/peliculas/likes';
 
   constructor(private http: HttpClient) {}
@@ -18,7 +17,7 @@ export class LikeService {
 
   darLike(resenaId: number): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post(`${this.baseUrl}/${resenaId}`, {}, { headers }); // aquí sin /dar-like
+    return this.http.post(`${this.baseUrl}/${resenaId}`, {}, { headers }); 
   }
 
   quitarLike(resenaId: number): Observable<any> {

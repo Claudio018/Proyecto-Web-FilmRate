@@ -36,12 +36,12 @@ export class InicioSesionPage implements OnInit {
       next: (res) => {
         this.mensajeColor = 'success';
         this.mensaje = 'Inicio de sesión exitoso';
-        // Redirigir rápido para mejor UX
+        // Redirigir 
         setTimeout(() => { this.router.navigate(['/home']); }, 1500);
       },
       error: (err) => {
         this.mensajeColor = 'danger';
-        // Mostrar el mensaje de error enviado desde backend (incluye bloqueo si aplica)
+        // Mostrar el mensaje de error enviado desde backend 
         if (err.error && err.error.error) {
           this.mensaje = err.error.error;
         } else {

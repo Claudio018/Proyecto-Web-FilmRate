@@ -54,13 +54,11 @@ router.get('/', authenticateToken, async (req, res) => {
   try {
     const usuarioRut = req.user.rut;
 
-    // Busca todos los favoritos del usuario, solo los IDs de películas
     const favoritos = await Favorito.findAll({
       where: { usuarioRut },
       attributes: ['peliculaId']
     });
 
-    // Extraemos los ids
     const peliculasFavoritasIds = favoritos.map(fav => fav.peliculaId);
 
     res.json({ peliculasFavoritasIds });

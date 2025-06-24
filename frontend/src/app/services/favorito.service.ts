@@ -14,7 +14,6 @@ export class FavoritoService {
     return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
   }
 
-  // Consulta si la película está en favoritos para el usuario actual
   estaFavorito(peliculaId: number) {
     return this.http.get<{ esFavorito: boolean }>(
       `${this.apiUrl}/${peliculaId}`,
@@ -22,11 +21,11 @@ export class FavoritoService {
     );
   }
 
-  // Cambia el estado favorito (agrega o quita) de la película
+  // Cambia el estado favorito agrega o quita de la película
   toggleFavorito(peliculaId: number, titulo: string) {
     return this.http.post(
       `${this.apiUrl}/${peliculaId}`,
-      { titulo }, // enviar título en el body
+      { titulo }, 
       { headers: this.getHeaders() }
     );
   }

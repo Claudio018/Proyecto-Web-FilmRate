@@ -8,7 +8,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
 
-  // Nuevo: estado de login reactivo
+  
   private loggedInSubject = new BehaviorSubject<boolean>(this.tieneTokenValido());
   public isLoggedIn$ = this.loggedInSubject.asObservable();
 
@@ -41,12 +41,11 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  // VERIFICAR LOGIN (no reactivo)
+  // VERIFICAR LOGIN 
   isLoggedIn(): boolean {
     return this.tieneTokenValido();
   }
 
-  // Interno: Validación de expiración
   private tieneTokenValido(): boolean {
     const token = this.getToken();
     if (!token) return false;
@@ -58,7 +57,7 @@ export class AuthService {
     }
   }
 
-  // GETTERS desde el token
+  // GETTERS 
   getUsuarioRut(): string | null {
     return this.extraerCampoDelToken('rut');
   }

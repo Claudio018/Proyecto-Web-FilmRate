@@ -8,7 +8,7 @@
       </p>
       <ion-button (click)="logout()">Cerrar Sesión</ion-button>
 
-      <!-- Formulario exclusivo para moderadores dentro del mismo contenedor -->
+      <!-- Formulario exclusivo para moderadores -->
       <div *ngIf="esModerador && usuarios.length > 0" class="formulario-moderador">
         <h3>Ver perfil de usuario</h3>
 

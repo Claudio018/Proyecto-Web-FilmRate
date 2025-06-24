@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Resena, Usuario, Pelicula } = require('../models'); // Importa desde index.js
+const { Resena, Usuario, Pelicula } = require('../models');
 const authenticateToken = require('../middleware/authenticateToken');
 
 // Obtener reseñas por película
@@ -59,13 +59,12 @@ router.post('/:peliculaId/resenas', authenticateToken, async (req, res) => {
   const peliculaId = req.params.peliculaId;
 
   try {
-    // Verificamos que la película exista o la creamos
+    // si no existe la pelicula se crea
     await Pelicula.findOrCreate({
       where: { id: peliculaId },
       defaults: { titulo }
     });
 
-    // UsuarioRut viene del token (req.user)
     const usuarioRut = req.user.rut;
 
     // Crear la reseña con el rut del usuario autenticado

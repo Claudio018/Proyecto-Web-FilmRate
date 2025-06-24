@@ -11,10 +11,8 @@ export class AppComponent {
   ngOnInit() {
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    // Aplicar el modo actual al cargar
     this.updateDarkMode(darkModeMediaQuery.matches);
 
-    // Escuchar cambios en tiempo real
     darkModeMediaQuery.addEventListener('change', (event) => {
       this.updateDarkMode(event.matches);
     });

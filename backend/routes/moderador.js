@@ -22,7 +22,7 @@ router.put('/usuarios/:rut/suspender', authenticateToken, verifyModerator, async
   }
 });
 
-// Quitar suspensión a usuario (RF-10-b)
+// Quitar suspensión a usuario 
 router.put('/usuarios/:rut/quitar-suspension', authenticateToken, verifyModerator, async (req, res) => {
   try {
     const { rut } = req.params;

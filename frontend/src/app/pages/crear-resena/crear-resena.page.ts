@@ -1,5 +1,3 @@
-// src/app/pages/crear-resena/crear-resena.page.ts
-
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -89,7 +87,7 @@ export class CrearResenaPage implements OnInit {
     texto: this.resenaForm.value.texto,
     valoracion: this.resenaForm.value.valoracion,
     usuarioRut: this.authService.getUsuarioRut(),
-    titulo: this.tituloSeleccionado // ✅ Agregado aquí
+    titulo: this.tituloSeleccionado 
   };
 
   this.resenaService.crearResena(this.peliculaIdSeleccionada, nuevaResena)

@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-//xd falta agregar las demas
 const { sequelize, Usuario, Resena,Favorito } = require('./models');
 
 // rutas
